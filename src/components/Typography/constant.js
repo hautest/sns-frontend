@@ -1,6 +1,6 @@
 import { css } from "styled-components";
 
-export const textCaseConstant = {
+export const TypographyConstant = {
   title: css`
     font-weight: 700;
     font-size: 20px;
