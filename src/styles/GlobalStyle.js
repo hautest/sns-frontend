@@ -8,4 +8,7 @@ export const GlobalStyle = createGlobalStyle`
   button {
     font-family: 'Roboto';
   }
+  input {
+    font-family: 'Roboto';
+  }
 `;

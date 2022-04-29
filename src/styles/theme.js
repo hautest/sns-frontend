@@ -13,6 +13,15 @@ const colors = {
   hoverColor: "#0065c2",
 };
 
+const spacing = {
+  first: "4px",
+  second: "8px",
+  third: "16px",
+  fourth: "32px",
+  fifth: "64px",
+};
+
 export const theme = {
   colors,
+  spacing,
 };
