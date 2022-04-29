@@ -1,17 +1,25 @@
 import { Button } from "./components/Button";
+import { GlobalFontFamily } from "./styleData/GlobalFontFamily";
+import { ThemeProvider } from "styled-components";
+import { theme } from "./styleData/Theme";
 
 function App() {
   return (
     <>
-      <Button size={"lg"} buttonValue={"lg"} />
-      <Button size={"md"} buttonValue={"md"} />
-      <Button size={"sm"} buttonValue={"sm"} />
-      <Button size={"xs"} buttonValue={"xs"} />
-      <hr></hr>
-      <Button size={"lg"} buttonValue={"lg"} state="disabled" />
-      <Button size={"md"} buttonValue={"md"} state="disabled" />
-      <Button size={"sm"} buttonValue={"sm"} state="disabled" />
-      <Button size={"xs"} buttonValue={"xs"} state="disabled" />
+      <ThemeProvider theme={theme}>
+        <GlobalFontFamily />
+        <Button size={"lg"}>
+          <div>Button</div>
+        </Button>
+        <Button size={"md"} />
+        <Button size={"sm"} />
+        <Button size={"xs"} />
+        <hr></hr>
+        <Button size={"lg"} disabled />
+        <Button size={"md"} disabled />
+        <Button size={"sm"} disabled />
+        <Button size={"xs"} disabled />
+      </ThemeProvider>
     </>
   );
 }
