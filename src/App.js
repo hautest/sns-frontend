@@ -3,11 +3,13 @@ import { Button } from "./components/Button";
 import { theme } from "./styles";
 import { Typography } from "./components/Typography";
 import { Input } from "./components/Input";
+import { GlobalStyle } from "./styles";
 
 function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
         <Button size="lg">
           <div>Butto</div>
         </Button>
