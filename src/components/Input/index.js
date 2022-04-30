@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { inputSize, inputState } from "./constants";
+import { inputState } from "./constants";
 
 export const Input = styled.input`
   ${({ theme: { colors } }) => css`
@@ -17,6 +17,9 @@ export const Input = styled.input`
     }
   `}
   ${({ state }) => inputState[state]};
-  ${({ size }) => inputSize[size]};
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 100%;
 `;
