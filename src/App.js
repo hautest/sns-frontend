@@ -1,9 +1,8 @@
 import { ThemeProvider } from "styled-components";
 import { Button } from "./components/Button";
-import { theme } from "./styles";
+import { theme, GlobalStyle } from "./styles";
 import { Typography } from "./components/Typography";
 import { Input } from "./components/Input";
-import { GlobalStyle } from "./styles";
 
 function App() {
   return (
