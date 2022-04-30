@@ -14,11 +14,11 @@ const colors = {
 };
 
 const spacing = {
-  first: "4px",
-  second: "8px",
-  third: "16px",
-  fourth: "32px",
-  fifth: "64px",
+  xs: "4px",
+  sm: "8px",
+  md: "16px",
+  lg: "32px",
+  xl: "64px",
 };
 
 export const theme = {

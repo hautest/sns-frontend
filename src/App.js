@@ -48,10 +48,12 @@ function App() {
           이것은 body4 입니다
         </Typography>
         <hr />
-        <Input placeholder="이것은 input입니다" />
-        <Input placeholder="이것은 input입니다" state="success" />
-        <Input placeholder="이것은 input입니다" required />
+        <Input placeholder="이것은 input입니다" size="lg" />
+        <Input placeholder="이것은 input입니다" size="sm" />
+        <Input placeholder="이것은 input입니다" size="lg" state="success" />
+        <Input placeholder="이것은 input입니다" size="sm" state="false" />
         <Input placeholder="이것도 input입니다" disabled />
+        <hr />
       </ThemeProvider>
     </>
   );
