@@ -1,11 +1,10 @@
 import { createGlobalStyle } from "styled-components";
+import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
-  body {
+  ${reset};
+  html * {
     font-family: 'Roboto';
-  }
-
-  button {
-    font-family: 'Roboto';
+    box-sizing: border-box;
   }
 `;
