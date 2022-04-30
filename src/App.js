@@ -1,7 +1,8 @@
 import { ThemeProvider } from "styled-components";
 import { Button } from "./components/Button";
-import { GlobalStyle, theme } from "./styles";
+import { theme, GlobalStyle } from "./styles";
 import { Typography } from "./components/Typography";
+import { Input } from "./components/Input";
 
 function App() {
   return (
@@ -46,6 +47,13 @@ function App() {
         <Typography variant="body4" color="success">
           이것은 body4 입니다
         </Typography>
+        <hr />
+        <Input placeholder="이것은 input입니다" />
+        <Input placeholder="이것은 input입니다" />
+        <Input placeholder="valid" size="lg" state="success" />
+        <Input placeholder="invalid" size="sm" state="error" />
+        <Input placeholder="이것도 input입니다" disabled />
+        <hr />
       </ThemeProvider>
     </>
   );
