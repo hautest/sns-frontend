@@ -3,6 +3,7 @@ import { Button } from "./components/Button";
 import { theme, GlobalStyle } from "./styles";
 import { Typography } from "./components/Typography";
 import { Input } from "./components/Input";
+import { Icon } from "./components/Icon/Icon";
 
 function App() {
   return (
@@ -53,6 +54,9 @@ function App() {
         <Input placeholder="valid" size="lg" state="success" />
         <Input placeholder="invalid" size="sm" state="error" />
         <Input placeholder="이것도 input입니다" disabled />
+        <hr />
+        <Icon size="100px" name="loading" />
+        <Icon name="close" />
         <hr />
       </ThemeProvider>
     </>
