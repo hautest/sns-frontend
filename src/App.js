@@ -55,8 +55,8 @@ function App() {
         <Input placeholder="invalid" size="sm" state="error" />
         <Input placeholder="이것도 input입니다" disabled />
         <hr />
-        <Icon size="100px" icon="loading" />
-        <Icon icon="close" />
+        <Icon size="100px" name="loading" />
+        <Icon name="close" />
         <hr />
       </ThemeProvider>
     </>
