@@ -5,6 +5,6 @@ export const inputState = {
     border: 1px solid ${({ theme }) => theme.colors.success};
   `,
   error: css`
-    border: 2px solid ${({ theme }) => theme.colors.warn};
+    border: 1px solid ${({ theme }) => theme.colors.warn};
   `,
 };
