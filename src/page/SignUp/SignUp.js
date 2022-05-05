@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 import {
   Button,
@@ -8,7 +10,7 @@ import {
   Modal,
 } from "../../components";
 import { useValidatedInputValue } from "./useValidatedInputValue";
-import { signUpRequest } from "../../store/slice/userSlice";
+import { signUpRequest, resetSignUpSuccess } from "../../store/slice/userSlice";
 
 const EMAIL_REGEX =
   /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -18,8 +20,10 @@ const PASSWORD_REGEX =
 
 export function SignUp() {
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.user.loading);
-
+  const { loading: isLoading, isSignUpSuccess } = useSelector(
+    (state) => state.user
+  );
+  const navigate = useNavigate();
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
   const password = useValidatedInputValue("", PASSWORD_REGEX);
@@ -49,6 +53,13 @@ export function SignUp() {
       })
     );
   };
+
+  useEffect(() => {
+    if (isSignUpSuccess === true) {
+      navigate("/login");
+      dispatch(resetSignUpSuccess());
+    }
+  }, [isSignUpSuccess, dispatch, navigate]);
 
   return (
     <div>

@@ -17,8 +17,12 @@ const userSlice = createSlice({
     signUpError(state) {
       state.loading = false;
     },
+    resetSignUpSuccess(state) {
+      state.isSignUpSuccess = false;
+    },
   },
 });
 
 export const signUpReducer = userSlice.reducer;
-export const { signUpRequest, signUpSuccess, signUpError } = userSlice.actions;
+export const { signUpRequest, signUpSuccess, signUpError, resetSignUpSuccess } =
+  userSlice.actions;
