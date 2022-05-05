@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { Button, LabelAndInput } from "../../components";
 import { useValidatedInputValue } from "./useValidatedInputValue";
-import { GlobalLayout } from "../../styles/GlobalLayout/GlobalLayout";
+import { useDispatch } from "react-redux";
+import { signUpRequest } from "../../store/slice/userSlice";
 
 const EMAIL_REGEX =
   /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -10,6 +11,8 @@ const PASSWORD_REGEX =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{10,}$/;
 
 export function SignUp() {
+  const dispatch = useDispatch();
+
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
   const password = useValidatedInputValue("", PASSWORD_REGEX);
@@ -29,17 +32,31 @@ export function SignUp() {
 
   const buttonDisabled = inputArr.some(({ status }) => status !== "success");
 
+  const handleSignUp = () => {
+    dispatch(
+      signUpRequest({
+        email: email.value,
+        nickname: nickname.value,
+        password: password.value,
+      })
+    );
+  };
+
   return (
-    <GlobalLayout>
+    <div>
       {inputArr.map((value) => (
         <LabelAndInput key={value.id} {...value} />
       ))}
       <ButtonBox>
-        <Button size="lg" disabled={buttonDisabled}>
+        <Button
+          size="lg"
+          disabled={buttonDisabled}
+          onClick={() => handleSignUp()}
+        >
           회원가입
         </Button>
       </ButtonBox>
-    </GlobalLayout>
+    </div>
   );
 }
 

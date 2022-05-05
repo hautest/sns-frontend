@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Typography } from "../../components/Typography";
+import { Typography } from "../Typography";
 
 export function Header() {
   return (
@@ -21,7 +21,6 @@ export function Header() {
 
 const StyledHeader = styled.header`
   background-color: ${({ theme }) => theme.colors.white};
-  // height: 52px; ?
   display: flex;
   justify-content: space-between;
   align-items: center;

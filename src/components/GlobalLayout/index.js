@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Header } from "./Header";
-import { Main } from "./Main";
 
 export function GlobalLayout({ children }) {
   return (
@@ -11,10 +10,15 @@ export function GlobalLayout({ children }) {
   );
 }
 
-export const StyledGlobalLayout = styled.div`
+const StyledGlobalLayout = styled.div`
   margin: 0 auto;
   min-width: 375px;
   max-width: 420px;
   height: 100vh;
   background-color: ${({ theme }) => theme.colors.gray6};
+`;
+
+const Main = styled.div`
+  width: 420px;
+  padding: 24px 35px;
 `;
