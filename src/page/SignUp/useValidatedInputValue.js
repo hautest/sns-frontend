@@ -9,9 +9,6 @@ export const useValidatedInputValue = (initialValue = "", regex) => {
       target: { value },
     } = event;
     setValue(value);
-  };
-
-  const onBlur = () => {
     setStatus(regex.test(value) ? "success" : "error");
   };
 
@@ -19,6 +16,5 @@ export const useValidatedInputValue = (initialValue = "", regex) => {
     value,
     status,
     onChange,
-    onBlur,
   };
 };

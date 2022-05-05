@@ -4,3 +4,5 @@ export * from "./Input";
 export * from "./Typography";
 export * from "./GlobalLayout";
 export * from "./LabelAndInput";
+export * from "./Modal";
+export * from "./LoadingIndicator";

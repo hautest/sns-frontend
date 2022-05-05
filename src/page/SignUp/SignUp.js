@@ -1,7 +1,13 @@
 import styled from "styled-components";
-import { Button, LabelAndInput } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  Button,
+  LabelAndInput,
+  LoadingIndicator,
+  Modal,
+} from "../../components";
 import { useValidatedInputValue } from "./useValidatedInputValue";
-import { useDispatch } from "react-redux";
 import { signUpRequest } from "../../store/slice/userSlice";
 
 const EMAIL_REGEX =
@@ -12,6 +18,7 @@ const PASSWORD_REGEX =
 
 export function SignUp() {
   const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.user.loading);
 
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
@@ -32,7 +39,8 @@ export function SignUp() {
 
   const buttonDisabled = inputArr.some(({ status }) => status !== "success");
 
-  const handleSignUp = () => {
+  const handleSignUp = (e) => {
+    e.preventDefault();
     dispatch(
       signUpRequest({
         email: email.value,
@@ -44,18 +52,19 @@ export function SignUp() {
 
   return (
     <div>
-      {inputArr.map((value) => (
-        <LabelAndInput key={value.id} {...value} />
-      ))}
-      <ButtonBox>
-        <Button
-          size="lg"
-          disabled={buttonDisabled}
-          onClick={() => handleSignUp()}
-        >
-          회원가입
-        </Button>
-      </ButtonBox>
+      <Modal visible={isLoading}>
+        <LoadingIndicator />
+      </Modal>
+      <form onSubmit={handleSignUp}>
+        {inputArr.map((value) => (
+          <LabelAndInput key={value.id} {...value} />
+        ))}
+        <ButtonBox>
+          <Button size="lg" disabled={buttonDisabled}>
+            회원가입
+          </Button>
+        </ButtonBox>
+      </form>
     </div>
   );
 }
