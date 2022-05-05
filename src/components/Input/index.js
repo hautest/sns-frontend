@@ -5,11 +5,12 @@ export const Input = styled.input`
   ${({ theme: { colors } }) => css`
     border: 1px solid ${colors.gray4};
     background: ${colors.white};
+    width: 100%;
     ::placeholder {
       color: ${colors.gray4};
     }
     :focus {
-      border: 2px solid ${colors.primary};
+      border: 1px solid ${colors.primary};
     }
     :disabled {
       opacity: 0.5;
