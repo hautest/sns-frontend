@@ -9,7 +9,7 @@ import {
   LoadingIndicator,
   Modal,
 } from "../../components";
-import { useValidatedInputValue } from "./useValidatedInputValue";
+import { useValidatedInputValue } from "../../hooks";
 import { signUpRequest, resetSignUpSuccess } from "../../store/slice/userSlice";
 
 const EMAIL_REGEX =

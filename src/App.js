@@ -1,23 +1,37 @@
 import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { theme, GlobalStyle } from "./styles";
-import { MainPageUnLogIn } from "./page/MainPageUnLogIn";
+import { MainPage } from "./page/MainPage";
 import { SignUp } from "./page/SignUp/SignUp";
 import { GlobalLayout } from "./components";
+import { Login } from "./page/Login";
+import { requestToken } from "./store/slice/userSlice";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const pastRefreshToken = localStorage.getItem("refreshToken");
+    if (!!pastRefreshToken) {
+      dispatch(requestToken(pastRefreshToken));
+    }
+  }, [dispatch]);
+
   return (
     <>
       <ThemeProvider theme={theme}>
         <GlobalStyle />
-        <GlobalLayout>
-          <BrowserRouter>
+        <BrowserRouter>
+          <GlobalLayout>
             <Routes>
-              <Route path="/" element={<MainPageUnLogIn />} />
+              <Route path="/" element={<MainPage />} />
               <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
-          </BrowserRouter>
-        </GlobalLayout>
+          </GlobalLayout>
+        </BrowserRouter>
       </ThemeProvider>
     </>
   );
