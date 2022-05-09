@@ -11,4 +11,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     background-color: ${theme.colors.black};
   }
+  a {
+    text-decoration-line : none;
+  }
 `;

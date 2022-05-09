@@ -1,20 +1,19 @@
 import styled from "styled-components";
 import { Typography } from "../Typography";
+import { Link } from "react-router-dom";
+import { HeaderContent } from "./HeaderContent";
 
 export function Header() {
   return (
     <StyledHeader>
-      <Typography variant="title" color="primary">
-        Fluss
-      </Typography>
-      <SignUpLogInBox>
-        <Typography variant="body3" color="black">
-          로그인
+      <Link to={"/"}>
+        <Typography variant="title" color="primary">
+          Fluss
         </Typography>
-        <Typography variant="body3" color="black">
-          회원가입
-        </Typography>
-      </SignUpLogInBox>
+      </Link>
+      <HeaderBox>
+        <HeaderContent />
+      </HeaderBox>
     </StyledHeader>
   );
 }
@@ -27,7 +26,8 @@ const StyledHeader = styled.header`
   padding: ${({ theme }) => theme.spacing.md};
 `;
 
-const SignUpLogInBox = styled.div`
+const HeaderBox = styled.div`
   display: flex;
+  align-items: center;
   gap: ${({ theme }) => theme.spacing.sm};
 `;
