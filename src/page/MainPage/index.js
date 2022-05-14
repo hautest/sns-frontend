@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import {
@@ -9,18 +9,26 @@ import {
 import { flexSpaceBetween } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
 import { MainPageModal } from "./ModalChild";
+import { modalOn } from "../../store/slice/postSlice";
 
 export function MainPage() {
   const isLoading = useSelector(({ post }) => post.loading);
   const userData = useSelector(({ user }) => user.userData);
   const modalVisible = useSelector(({ post }) => post.modalVisibleValue);
+  const dispatch = useDispatch();
+
+  const handleOnclickBtn = () => {
+    dispatch(modalOn());
+  };
 
   return (
     <MainBox>
       {modalVisible && <MainPageModal />}
       {!!userData && (
         <FixedCenterPosition>
-          <Button size="lg">새 글 작성</Button>
+          <Button size="lg" onClick={handleOnclickBtn}>
+            새 글 작성
+          </Button>
         </FixedCenterPosition>
       )}
       <ContentBox />

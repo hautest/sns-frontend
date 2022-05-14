@@ -7,6 +7,7 @@ const postSlice = createSlice({
     postData: [],
     lastItemId: null,
     hasMore: true,
+    modalVisibleValue: false,
   },
   reducers: {
     getPostRequest(state) {
@@ -25,9 +26,29 @@ const postSlice = createSlice({
     getPostError(state) {
       state.loading = false;
     },
+    modalOn(state) {
+      state.modalVisibleValue = true;
+    },
+    modalOff(state) {
+      state.modalVisibleValue = false;
+    },
+    createPostRequest(state) {
+      state.loading = true;
+    },
+    createPostSuccess(state, { payload }) {
+      state.loading = false;
+      state.postData = [payload, ...state.postData];
+    },
   },
 });
 
 export const postReducer = postSlice.reducer;
-export const { getPostRequest, getPostSuccess, getPostError } =
-  postSlice.actions;
+export const {
+  getPostRequest,
+  getPostSuccess,
+  getPostError,
+  modalOn,
+  modalOff,
+  createPostRequest,
+  createPostSuccess,
+} = postSlice.actions;
