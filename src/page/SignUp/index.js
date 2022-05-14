@@ -8,6 +8,7 @@ import {
   LabelAndInput,
   LoadingIndicator,
   Modal,
+  FixedCenterPosition,
 } from "../../components";
 import { useValidatedInputValue } from "../../hooks";
 import { signUpRequest, resetSignUpSuccess } from "../../store/slice/userSlice";
@@ -30,7 +31,7 @@ export function SignUp() {
   const rePassword = useValidatedInputValue("", new RegExp(password.value));
 
   const inputArr = [
-    { ...email, id: "email", label: "이메일", placeholder: "이메일" },
+    { ...email, id: "email", label: "이메일" },
     {
       ...nickname,
       id: "nickname",
@@ -49,7 +50,6 @@ export function SignUp() {
       id: "rePassword",
       label: "비밀번호 확인",
       type: "password",
-      placeholder: "비밀번호 확인",
     },
   ];
 
@@ -82,21 +82,15 @@ export function SignUp() {
         {inputArr.map((value) => (
           <LabelAndInput key={value.id} {...value} />
         ))}
-        <ButtonBox>
+        <FixedCenterPosition>
           <Button size="lg" disabled={buttonDisabled}>
             회원가입
           </Button>
-        </ButtonBox>
+        </FixedCenterPosition>
       </form>
     </StyledSignUp>
   );
 }
-
-export const ButtonBox = styled.div`
-  margin: 0 auto;
-  width: fit-content;
-`;
-
 const StyledSignUp = styled.div`
   padding: 0 35px;
 `;

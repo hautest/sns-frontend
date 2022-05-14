@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { theme, GlobalStyle } from "./styles";
 import { MainPage } from "./page/MainPage";
-import { SignUp } from "./page/SignUp/SignUp";
+import { SignUp } from "./page/SignUp";
 import { GlobalLayout } from "./components";
 import { Login } from "./page/Login";
 import { requestToken } from "./store/slice/userSlice";
