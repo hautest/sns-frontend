@@ -5,7 +5,7 @@ export const Input = styled.input`
   ${({ theme: { colors } }) => css`
     border: 1px solid ${colors.gray4};
     background: ${colors.white};
-    width: 100%;
+    flex: 1;
     ::placeholder {
       color: ${colors.gray4};
     }
