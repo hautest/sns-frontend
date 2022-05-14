@@ -30,14 +30,26 @@ export function SignUp() {
   const rePassword = useValidatedInputValue("", new RegExp(password.value));
 
   const inputArr = [
-    { ...email, id: "email", label: "이메일" },
-    { ...nickname, id: "nickname", label: "닉네임" },
-    { ...password, id: "password", label: "비밀번호", type: "password" },
+    { ...email, id: "email", label: "이메일", placeholder: "이메일" },
+    {
+      ...nickname,
+      id: "nickname",
+      label: "닉네임",
+      placeholder: "2글자 이상 10글자 이하",
+    },
+    {
+      ...password,
+      id: "password",
+      label: "비밀번호",
+      type: "password",
+      placeholder: "10글자 이상, 숫자, 영문자, 특수문자 포함",
+    },
     {
       ...rePassword,
       id: "rePassword",
       label: "비밀번호 확인",
       type: "password",
+      placeholder: "비밀번호 확인",
     },
   ];
 
@@ -62,7 +74,7 @@ export function SignUp() {
   }, [isSignUpSuccess, dispatch, navigate]);
 
   return (
-    <div>
+    <StyledSignUp>
       <Modal visible={isLoading}>
         <LoadingIndicator />
       </Modal>
@@ -76,11 +88,15 @@ export function SignUp() {
           </Button>
         </ButtonBox>
       </form>
-    </div>
+    </StyledSignUp>
   );
 }
 
 export const ButtonBox = styled.div`
   margin: 0 auto;
   width: fit-content;
+`;
+
+const StyledSignUp = styled.div`
+  padding: 0 35px;
 `;
