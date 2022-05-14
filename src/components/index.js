@@ -6,3 +6,4 @@ export * from "./GlobalLayout";
 export * from "./LabelAndInput";
 export * from "./Modal";
 export * from "./LoadingIndicator";
+export * from "./FixedCenterPosition";

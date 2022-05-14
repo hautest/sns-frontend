@@ -1,6 +1,11 @@
 import { useEffect } from "react";
-import { LabelAndInput, Button, Modal, LoadingIndicator } from "../components";
-import { ButtonBox } from "./SignUp/SignUp";
+import {
+  LabelAndInput,
+  Button,
+  Modal,
+  LoadingIndicator,
+  FixedCenterPosition,
+} from "../components";
 import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +31,7 @@ export function Login() {
   }, [userData, navigate]);
 
   return (
-    <>
+    <div style={{ padding: "0 35px" }}>
       <Modal visible={isLoading}>
         <LoadingIndicator />
       </Modal>
@@ -42,10 +47,10 @@ export function Login() {
           onChange={onchangePasswordValue}
           type="password"
         />
-        <ButtonBox>
+        <FixedCenterPosition>
           <Button size="lg">로그인</Button>
-        </ButtonBox>
+        </FixedCenterPosition>
       </form>
-    </>
+    </div>
   );
 }

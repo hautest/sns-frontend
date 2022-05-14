@@ -8,6 +8,7 @@ import {
   LabelAndInput,
   LoadingIndicator,
   Modal,
+  FixedCenterPosition,
 } from "../../components";
 import { useValidatedInputValue } from "../../hooks";
 import { signUpRequest, resetSignUpSuccess } from "../../store/slice/userSlice";
@@ -31,8 +32,19 @@ export function SignUp() {
 
   const inputArr = [
     { ...email, id: "email", label: "이메일" },
-    { ...nickname, id: "nickname", label: "닉네임" },
-    { ...password, id: "password", label: "비밀번호", type: "password" },
+    {
+      ...nickname,
+      id: "nickname",
+      label: "닉네임",
+      placeholder: "2글자 이상 10글자 이하",
+    },
+    {
+      ...password,
+      id: "password",
+      label: "비밀번호",
+      type: "password",
+      placeholder: "10글자 이상, 숫자, 영문자, 특수문자 포함",
+    },
     {
       ...rePassword,
       id: "rePassword",
@@ -62,7 +74,7 @@ export function SignUp() {
   }, [isSignUpSuccess, dispatch, navigate]);
 
   return (
-    <div>
+    <StyledSignUp>
       <Modal visible={isLoading}>
         <LoadingIndicator />
       </Modal>
@@ -70,17 +82,15 @@ export function SignUp() {
         {inputArr.map((value) => (
           <LabelAndInput key={value.id} {...value} />
         ))}
-        <ButtonBox>
+        <FixedCenterPosition>
           <Button size="lg" disabled={buttonDisabled}>
             회원가입
           </Button>
-        </ButtonBox>
+        </FixedCenterPosition>
       </form>
-    </div>
+    </StyledSignUp>
   );
 }
-
-export const ButtonBox = styled.div`
-  margin: 0 auto;
-  width: fit-content;
+const StyledSignUp = styled.div`
+  padding: 0 35px;
 `;
