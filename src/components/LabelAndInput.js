@@ -18,7 +18,7 @@ export function LabelAndInput({
         {label}
       </Typography>
       <Input
-        placeholder={placeholder}
+        placeholder={placeholder || label}
         id={id}
         onChange={onChange}
         value={value}
