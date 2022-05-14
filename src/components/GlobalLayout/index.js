@@ -14,11 +14,10 @@ const StyledGlobalLayout = styled.div`
   margin: 0 auto;
   min-width: 375px;
   max-width: 420px;
-  height: 100vh;
+  min-height: 100vh;
   background-color: ${({ theme }) => theme.colors.gray6};
 `;
 
 const Main = styled.div`
   width: 420px;
-  padding: 24px 35px;
 `;
