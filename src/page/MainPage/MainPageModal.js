@@ -46,7 +46,8 @@ export function MainPageModal() {
             />
           </InputBox>
           <Button size="md" disabled={isLoading}>
-            등록 <LoadingIndicator size="16px" isLoading={!isLoading} />
+            등록
+            {isLoading && <LoadingIndicator size="16px" color="white" />}
           </Button>
         </InputButtonBox>
       </ModalChildBox>

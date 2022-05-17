@@ -8,7 +8,7 @@ import {
 } from "../../components";
 import { flexSpaceBetween } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
-import { MainPageModal } from "./ModalChild";
+import { MainPageModal } from "./MainPageModal";
 import { modalOn } from "../../store/slice/postSlice";
 
 export function MainPage() {
@@ -32,8 +32,8 @@ export function MainPage() {
         </FixedCenterPosition>
       )}
       <ContentBox />
-      <LoadingIconBox visible={isLoading}>
-        <LoadingIndicator size="16px" />
+      <LoadingIconBox>
+        {isLoading && <LoadingIndicator size="16px" />}
       </LoadingIconBox>
     </MainBox>
   );
@@ -46,6 +46,5 @@ const MainBox = styled.div`
 `;
 
 const LoadingIconBox = styled.div`
-  visibility: ${({ visible }) => (visible ? "visible" : "hidden")};
   margin: 0 auto;
 `;
