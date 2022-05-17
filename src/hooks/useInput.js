@@ -11,5 +11,5 @@ export const useInput = (initialValue = "") => {
     setState(value);
   };
 
-  return [state, onChange];
+  return [state, onChange, setState];
 };

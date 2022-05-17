@@ -39,6 +39,31 @@ const postSlice = createSlice({
       state.loading = false;
       state.postData = [payload, ...state.postData];
     },
+    createCommentRequest(state) {
+      state.loading = true;
+    },
+    createCommentSuccess(state, { payload }) {
+      state.loading = false;
+      state.postData.forEach((data) => {
+        if (data.id === payload.data.postId) {
+          data.comments = [
+            ...data.comments,
+            {
+              id: payload.data.id,
+              desc: payload.data.desc,
+              commenter: {
+                id: payload.data.commenterId,
+                nickname: payload.nickname,
+              },
+            },
+          ];
+          state.loading = false;
+        }
+      });
+    },
+    createCommentError(state) {
+      state.loading = false;
+    },
   },
 });
 
@@ -51,4 +76,7 @@ export const {
   modalOff,
   createPostRequest,
   createPostSuccess,
+  createCommentRequest,
+  createCommentSuccess,
+  createCommentError,
 } = postSlice.actions;

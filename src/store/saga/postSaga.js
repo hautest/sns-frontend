@@ -15,6 +15,9 @@ import {
   createPostRequest,
   createPostSuccess,
   modalOff,
+  createCommentRequest,
+  createCommentSuccess,
+  createCommentError,
 } from "../slice/postSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
@@ -29,6 +32,7 @@ function* getPostSaga() {
     const {
       data: { posts, lastId },
     } = yield call(getPostAPI, lastItemId);
+    console.log(posts);
     yield put(getPostSuccess({ posts, lastId }));
   } catch (error) {
     yield put(getPostError);
@@ -60,7 +64,31 @@ function* createPostsaga({ payload: { desc, title } }) {
   }
 }
 
+function postCommentAPI(postId, desc, token) {
+  return axios.post(
+    `${BASE_URL}/comments`,
+    { postId, desc },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
+
+function* createCommentsaga({ payload: { postId, desc } }) {
+  try {
+    const {
+      userData: { nickname },
+      accessToken,
+    } = yield select(({ user }) => user);
+    const { data } = yield call(postCommentAPI, postId, desc, accessToken);
+    yield put(createCommentSuccess({ data, nickname }));
+  } catch (error) {
+    console.dir(error);
+    yield put(createCommentError);
+    alert("댓글 작성 실패");
+  }
+}
+
 export function* postSaga() {
   yield all([takeLatest(getPostRequest, getPostSaga)]);
   yield all([takeEvery(createPostRequest, createPostsaga)]);
+  yield all([takeEvery(createCommentRequest, createCommentsaga)]);
 }
