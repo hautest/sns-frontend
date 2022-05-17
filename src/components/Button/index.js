@@ -3,11 +3,14 @@ import { buttonSizes } from "./constants";
 
 export const Button = styled.button`
   ${({ size }) => buttonSizes[size]};
+  display: flex;
+  align-items: center;
   border: none;
   border-radius: 8px;
   font-style: normal;
   font-weight: 700;
-  ${({ theme: { colors } }) => css`
+  ${({ theme: { colors, spacing } }) => css`
+    gap: ${spacing.xs};
     color: ${colors.white};
     background-color: ${colors.primary};
     :hover:enabled {
