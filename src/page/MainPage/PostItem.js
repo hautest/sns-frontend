@@ -2,9 +2,10 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Typography, Input, Button } from "../../components";
+import { Typography } from "../../components";
 import { flexSpaceBetween, flexColumn } from "../../styles/common";
 import { CommentBox } from "./CommentBox";
+import { CommentInputButton } from "./CommentInputButton";
 
 export function PostItem({ title, desc, id, author, comments }) {
   const userData = useSelector(({ user }) => user.userData);
@@ -31,12 +32,7 @@ export function PostItem({ title, desc, id, author, comments }) {
           </Typography>
         )}
       </DescBox>
-      {!!userData && (
-        <InputButtonBox /* onSubmit={handleOnsubmit} */>
-          <Input placeholder="댓글 달기 (최대 100글자)" />
-          <Button size="sm">게시</Button>
-        </InputButtonBox>
-      )}
+      {!!userData && <CommentInputButton id={id} />}
       <StyledCommentBox>
         {comments.length ? (
           <CommentBox comments={comments} />
@@ -63,11 +59,6 @@ const MapContent = styled.div`
     gap: ${spacing.sm};
     border-radius: ${spacing.md};
   `}
-`;
-
-const InputButtonBox = styled.form`
-  ${flexSpaceBetween}
-  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const StyledCommentBox = styled.div`
