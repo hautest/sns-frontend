@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Typography, Input, Button } from "../../components";
-import { flexSpaceBetween } from "../../styles/common";
+import { flexSpaceBetween, flexColumn } from "../../styles/common";
 import { CommentBox } from "./CommentBox";
 
 export function PostItem({ title, desc, id, author, comments }) {
@@ -78,9 +78,8 @@ const StyledCommentBox = styled.div`
 `;
 
 const DescBox = styled.div`
+  gap: ${({ theme }) => theme.spacing.xs};
   min-height: 91px;
   word-break: break-all;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  ${flexColumn}
 `;

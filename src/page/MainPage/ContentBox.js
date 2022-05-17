@@ -18,7 +18,7 @@ export function ContentBox() {
   return (
     <StyledContentBox>
       {postDataArray?.map((post) => (
-        <PostItem {...post} />
+        <PostItem key={post.id} {...post} />
       ))}
       <div ref={ref} />
     </StyledContentBox>

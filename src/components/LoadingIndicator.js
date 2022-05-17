@@ -2,9 +2,9 @@ import styled, { keyframes } from "styled-components";
 
 import { Icon } from "./Icon";
 
-export function LoadingIndicator({ size = "32px", color, isLoading }) {
+export function LoadingIndicator({ size = "32px", color }) {
   return (
-    <IconRotate isLoading={!isLoading}>
+    <IconRotate>
       <Icon name="loading" size={size} color={color} />
     </IconRotate>
   );
@@ -20,7 +20,9 @@ const animation = keyframes`
 `;
 
 const IconRotate = styled.div`
-  width: fit-content;
-  animation: ${animation} 1.5s ease infinite;
-  display: ${({ isLoading }) => (!isLoading ? "none" : "block")};
+  display: flex;
+  & > svg {
+    animation: ${animation} 1.5s ease infinite;
+    transform-origin: center;
+  }
 `;
