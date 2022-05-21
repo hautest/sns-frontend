@@ -2,22 +2,25 @@ import styled, { css } from "styled-components";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Typography } from "../../components";
-import { flexSpaceBetween, flexColumn } from "../../styles/common";
-import { CommentBox } from "./CommentBox";
-import { CommentInputButton } from "./CommentInputButton";
+import { Typography } from ".";
+import { flexSpaceBetween, flexColumn } from "../styles/common";
+import { CommentBox } from "../page/MainPage/CommentBox";
+import { CommentInputButton } from "../page/MainPage/CommentInputButton";
+import { ModifyDesc } from "../page/MainPage/ModifyDesc";
 
-export function PostItem({ title, desc, id, author, comments }) {
+export function PostItem({ title, desc, id, author, comments, authorId }) {
   const userData = useSelector(({ user }) => user.userData);
   const hasMoreDesc = desc.length > 200;
   const [showAll, setShowAll] = useState(!hasMoreDesc);
-
   const descPreview = `${desc.substr(0, 200)}...`;
-
   const toggleShowAll = () => {
     setShowAll((prev) => !prev);
   };
 
+  const [modifyDesc, setModifyDesc] = useState(false);
+  const toggleModifyDesc = () => {
+    setModifyDesc((prev) => !prev);
+  };
   return (
     <MapContent key={id} id={id}>
       <TitleNicknameBox>
@@ -25,11 +28,27 @@ export function PostItem({ title, desc, id, author, comments }) {
         <Typography variant="body1">{author.nickname}</Typography>
       </TitleNicknameBox>
       <DescBox>
-        <Typography variant="body2">{showAll ? desc : descPreview}</Typography>
-        {hasMoreDesc && (
-          <Typography variant="body3" color="gray3" onClick={toggleShowAll}>
-            {showAll ? "접기" : "더보기"}
-          </Typography>
+        {!modifyDesc && (
+          <div>
+            <Typography variant="body2">
+              {showAll ? desc : descPreview}
+            </Typography>
+            {hasMoreDesc && (
+              <Typography variant="body3" color="gray3" onClick={toggleShowAll}>
+                {showAll ? "접기" : "더보기"}
+              </Typography>
+            )}
+          </div>
+        )}
+
+        {userData?.id === authorId && (
+          <ModifyDesc
+            toggleModifyDesc={toggleModifyDesc}
+            desc={desc}
+            modifyDesc={modifyDesc}
+            setModifyDesc={setModifyDesc}
+            id={id}
+          />
         )}
       </DescBox>
       {!!userData && <CommentInputButton id={id} />}
@@ -69,7 +88,7 @@ const StyledCommentBox = styled.div`
 `;
 
 const DescBox = styled.div`
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.sm};
   min-height: 91px;
   word-break: break-all;
   ${flexColumn}

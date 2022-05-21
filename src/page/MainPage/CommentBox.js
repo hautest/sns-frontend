@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { Typography } from "../../components";
+import { flexColumn } from "../../styles/common";
 
 export function CommentBox({ comments }) {
   const [showAllComment, setShowAllComment] = useState(false);
@@ -16,15 +17,15 @@ export function CommentBox({ comments }) {
   };
 
   return (
-    <>
+    <StyledCommentBox>
       {comments &&
         commentArr.map((data) => (
-          <StyledCommentBox key={data.id}>
+          <CommentNicknameDesc key={data.id}>
             <Typography variant="body3">{data.commenter.nickname}</Typography>
             <Typography variant="body4" color="gray2">
               {data.desc}
             </Typography>
-          </StyledCommentBox>
+          </CommentNicknameDesc>
         ))}
       {comments.length > 3 && (
         <ShowAllCommentBox>
@@ -37,11 +38,11 @@ export function CommentBox({ comments }) {
           </Typography>
         </ShowAllCommentBox>
       )}
-    </>
+    </StyledCommentBox>
   );
 }
 
-const StyledCommentBox = styled.div`
+const CommentNicknameDesc = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing.xs};
 `;
@@ -49,4 +50,9 @@ const StyledCommentBox = styled.div`
 const ShowAllCommentBox = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const StyledCommentBox = styled.div`
+  ${flexColumn}
+  gap : ${({ theme }) => theme.spacing.sm}
 `;
