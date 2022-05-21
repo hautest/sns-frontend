@@ -4,13 +4,11 @@ const postSlice = createSlice({
   name: "post",
   initialState: {
     loading: false,
-    mypostLoading: false,
-    postData: [],
-    myPostsData: [],
-    lastItemId: null,
-    myPostsLastItemId: null,
-    hasMore: true,
-    myPostsHasMore: true,
+    createCommentLoading: null,
+    patchPostLoading: null,
+    createPostLoading: false,
+    posts: { data: [], hasMore: true, lastItemId: null },
+    myPosts: { data: [], hasMore: true, lastItemId: null },
     modalVisibleValue: false,
   },
   reducers: {
@@ -19,13 +17,14 @@ const postSlice = createSlice({
     },
     getPostSuccess(state, { payload }) {
       state.loading = false;
-      if (!state.lastItemId || state.modalVisibleValue) {
-        state.postData = payload.posts;
+      const target = state[payload.targetField];
+      if (!target.lastItemId || state.modalVisibleValue) {
+        target.data = payload.posts;
       } else {
-        state.postData = [...state.postData, ...payload.posts];
+        target.data = [...target.data, ...payload.posts];
       }
-      state.lastItemId = payload.posts[payload.posts.length - 1].id;
-      state.hasMore = state.lastItemId !== payload.lastId;
+      target.lastItemId = payload.posts[payload.posts.length - 1].id;
+      target.hasMore = target.lastItemId !== payload.lastId;
     },
     getPostError(state) {
       state.loading = false;
@@ -37,18 +36,21 @@ const postSlice = createSlice({
       state.modalVisibleValue = false;
     },
     createPostRequest(state) {
-      state.loading = true;
+      state.createPostLoading = true;
     },
     createPostSuccess(state, { payload }) {
-      state.loading = false;
-      state.postData = [payload, ...state.postData];
+      state.createPostLoading = false;
+      state.posts.data = [payload, ...state.posts.data];
     },
-    createCommentRequest(state) {
-      state.loading = true;
+    createPostError(state) {
+      state.createPostLoading = false;
+    },
+    createCommentRequest(state, { payload }) {
+      state.createCommentLoading = payload.postId;
     },
     createCommentSuccess(state, { payload }) {
-      state.loading = false;
-      state.postData.forEach((data) => {
+      state.createCommentLoading = null;
+      const addComment = (data) => {
         if (data.id === payload.data.postId) {
           data.comments = [
             ...data.comments,
@@ -62,55 +64,34 @@ const postSlice = createSlice({
             },
           ];
         }
-      });
-      state.myPostsData.forEach((data) => {
-        if (data.id === payload.data.postId) {
-          data.comments = [
-            ...data.comments,
-            {
-              id: payload.data.id,
-              desc: payload.data.desc,
-              commenter: {
-                id: payload.data.commenterId,
-                nickname: payload.nickname,
-              },
-            },
-          ];
-        }
-      });
+      };
+      state.posts.data.forEach(addComment);
+      state.myPosts.data.forEach(addComment);
     },
     createCommentError(state) {
-      state.loading = false;
+      state.createCommentLoading = null;
     },
     getMyPostsRequest(state) {
       state.loading = true;
     },
-    getMyPostsSuccess(state, { payload }) {
-      state.loading = false;
-      if (!state.myPostsLastItemId) {
-        state.myPostsData = payload.posts;
-      } else {
-        state.myPostsData = [...state.myPostsData, ...payload.posts];
-      }
-      state.myPostsLastItemId = payload.posts[payload.posts.length - 1].id;
-      state.hasMore = state.myPostsLastItemId !== payload.lastId;
-    },
     getMyPostsError(state) {
       state.loading = false;
     },
-    patchPostRequest(state) {
-      state.loading = true;
+    patchPostRequest(state, { payload }) {
+      state.patchPostLoading = payload.id;
     },
     patchPostSuccess(state, { payload }) {
-      state.loading = false;
-      state.postData.forEach((data) => {
+      state.patchPostLoading = null;
+      const changeInput = (data) => {
         if (data.id === payload.id) {
           data.desc = payload.inputValue;
         }
-      });
+      };
+      state.posts.data.forEach(changeInput);
+      state.myPosts.data.forEach(changeInput);
     },
     patchPostError(state) {
-      state.loading = false;
+      state.patchPostLoading = null;
     },
   },
 });
@@ -124,11 +105,11 @@ export const {
   modalOff,
   createPostRequest,
   createPostSuccess,
+  createPostError,
   createCommentRequest,
   createCommentSuccess,
   createCommentError,
   getMyPostsRequest,
-  getMyPostsSuccess,
   getMyPostsError,
   patchPostRequest,
   patchPostSuccess,

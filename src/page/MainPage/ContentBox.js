@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getPostRequest } from "../../store/slice/postSlice";
 import { postItemLayout } from "../../styles/common";
 import { useInfiniteScroll } from "../../hooks";
-import { PostItem } from "../../components/PostItem";
+import { PostItem } from "../../components";
 
 export function ContentBox() {
-  const postDataArray = useSelector(({ post }) => post.postData);
-  const hasMore = useSelector(({ post }) => post.hasMore);
+  const { data, hasMore } = useSelector(({ post }) => post.posts);
   const dispatch = useDispatch();
 
   const { ref } = useInfiniteScroll(() => {
@@ -16,7 +15,7 @@ export function ContentBox() {
   }, [hasMore]);
   return (
     <StyledContentBox>
-      {postDataArray?.map((post) => (
+      {data?.map((post) => (
         <PostItem key={post.id} {...post} />
       ))}
       <div ref={ref} />

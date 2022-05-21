@@ -14,12 +14,12 @@ import {
   getPostError,
   createPostRequest,
   createPostSuccess,
+  createPostError,
   modalOff,
   createCommentRequest,
   createCommentSuccess,
   createCommentError,
   getMyPostsRequest,
-  getMyPostsSuccess,
   getMyPostsError,
   patchPostRequest,
   patchPostSuccess,
@@ -36,12 +36,11 @@ function getPostAPI(lastItemId) {
 
 function* getPostSaga() {
   try {
-    const lastItemId = yield select(({ post }) => post.lastItemId);
-    const token = yield select(({ user }) => user.accessToken);
+    const lastItemId = yield select(({ post }) => post.posts.lastItemId);
     const {
       data: { posts, lastId },
-    } = yield call(getPostAPI, lastItemId, token);
-    yield put(getPostSuccess({ posts, lastId }));
+    } = yield call(getPostAPI, lastItemId);
+    yield put(getPostSuccess({ posts, lastId, targetField: "posts" }));
   } catch (error) {
     yield put(getPostError);
     console.log(error);
@@ -68,6 +67,7 @@ function* createPostsaga({ payload: { desc, title } }) {
     yield put(modalOff());
   } catch (error) {
     console.dir(error);
+    yield put(createPostError());
     alert("새 글 작성 실패");
   }
 }
@@ -105,17 +105,17 @@ function getMyPostsAPI(myPostsLastItemId, token) {
 function* getMyPostSaga() {
   try {
     const myPostsLastItemId = yield select(
-      ({ post }) => post.myPostsLastItemId
+      ({ post }) => post.myPosts.lastItemId
     );
     const token = yield select(({ user }) => user.accessToken);
     const {
       data: { posts, lastId },
     } = yield call(getMyPostsAPI, myPostsLastItemId, token);
-    yield put(getMyPostsSuccess({ posts, lastId }));
+    yield put(getPostSuccess({ posts, lastId, targetField: "myPosts" }));
   } catch (error) {
     yield put(getMyPostsError());
     console.log(error);
-    alert(error.response.data.message);
+    alert("게시물이 없습니다.");
   }
 }
 

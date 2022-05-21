@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import { flexSpaceBetween } from "../../styles/common";
-import { Input, Button, LoadingIndicator } from "../../components";
+import { Input, Button, LoadingIndicator } from "..";
 import { useInput } from "../../hooks/useInput";
 import { createCommentRequest } from "../../store/slice/postSlice";
 
 export function CommentInputButton({ id }) {
-  const loading = useSelector(({ post }) => post.loading);
+  const loading = useSelector(({ post }) => post.createCommentLoading === id);
   const dispatch = useDispatch();
   const [desc, onChangeDesc, setDesc] = useInput("");
 

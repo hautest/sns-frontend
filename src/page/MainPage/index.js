@@ -8,8 +8,8 @@ import {
 } from "../../components";
 import { postPageLayout } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
-import { InputAndButtonInModal } from "../../components/InputAndButtonInModal";
 import { modalOn } from "../../store/slice/postSlice";
+import { AddPostModal } from "./AddPostModal";
 
 export function MainPage() {
   const isLoading = useSelector(({ post }) => post.loading);
@@ -23,7 +23,7 @@ export function MainPage() {
 
   return (
     <MainBox>
-      {modalVisible && <InputAndButtonInModal />}
+      {modalVisible && <AddPostModal />}
       {!!userData && (
         <FixedCenterPosition>
           <Button size="lg" onClick={handleOnclickBtn}>
