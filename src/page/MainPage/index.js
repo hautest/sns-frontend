@@ -6,9 +6,9 @@ import {
   LoadingIndicator,
   FixedCenterPosition,
 } from "../../components";
-import { flexSpaceBetween } from "../../styles/common";
+import { postPageLayout } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
-import { MainPageModal } from "./MainPageModal";
+import { InputAndButtonInModal } from "../../components/InputAndButtonInModal";
 import { modalOn } from "../../store/slice/postSlice";
 
 export function MainPage() {
@@ -23,7 +23,7 @@ export function MainPage() {
 
   return (
     <MainBox>
-      {modalVisible && <MainPageModal />}
+      {modalVisible && <InputAndButtonInModal />}
       {!!userData && (
         <FixedCenterPosition>
           <Button size="lg" onClick={handleOnclickBtn}>
@@ -40,9 +40,7 @@ export function MainPage() {
 }
 
 const MainBox = styled.div`
-  ${flexSpaceBetween}
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.lg};
+  ${postPageLayout}
 `;
 
 const LoadingIconBox = styled.div`
