@@ -1,20 +1,15 @@
-import { useState } from "react";
 import styled from "styled-components";
 
-import { Typography } from "../../components";
+import { Typography } from "..";
 import { flexColumn } from "../../styles/common";
+import { useToggle } from "../../hooks";
 
 export function CommentBox({ comments }) {
-  const [showAllComment, setShowAllComment] = useState(false);
-  const commentArr =
-    showAllComment || comments.length < 4
-      ? comments
-      : [comments[0], comments[1], comments[2]];
-  const textValue = showAllComment ? "접기" : "댓글 모두 보기";
+  const [showAllComment, toggleShowAllComment] = useToggle(false);
 
-  const handleShowAllComment = () => {
-    setShowAllComment((prev) => !prev);
-  };
+  const isLengthOver3 = comments.length > 3;
+  const commentArr =
+    showAllComment || !isLengthOver3 ? comments : comments.slice(0, 3);
 
   return (
     <StyledCommentBox>
@@ -22,19 +17,21 @@ export function CommentBox({ comments }) {
         commentArr.map((data) => (
           <CommentNicknameDesc key={data.id}>
             <Typography variant="body3">{data.commenter.nickname}</Typography>
-            <Typography variant="body4" color="gray2">
-              {data.desc}
-            </Typography>
+            <Desc>
+              <Typography variant="body4" color="gray2">
+                {data.desc}
+              </Typography>
+            </Desc>
           </CommentNicknameDesc>
         ))}
-      {comments.length > 3 && (
+      {isLengthOver3 && (
         <ShowAllCommentBox>
           <Typography
             variant="body3"
             color="gray3"
-            onClick={handleShowAllComment}
+            onClick={toggleShowAllComment}
           >
-            {textValue}
+            {showAllComment ? "접기" : "댓글 모두 보기"}
           </Typography>
         </ShowAllCommentBox>
       )}
@@ -54,5 +51,9 @@ const ShowAllCommentBox = styled.div`
 
 const StyledCommentBox = styled.div`
   ${flexColumn}
-  gap : ${({ theme }) => theme.spacing.sm}
+  gap : ${({ theme }) => theme.spacing.sm};
+`;
+
+const Desc = styled.span`
+  word-break: break-word;
 `;
