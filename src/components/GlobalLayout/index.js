@@ -19,5 +19,6 @@ const StyledGlobalLayout = styled.div`
 `;
 
 const Main = styled.div`
-  width: 420px;
+  min-width: 375px;
+  max-width: 420px;
 `;
