@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { theme, GlobalStyle } from "./styles";
 import { MainPage } from "./page/MainPage";
 import { SignUp } from "./page/SignUp";
+import { MyInformationPage } from "./page/MyInformation";
 import { GlobalLayout } from "./components";
 import { Login } from "./page/Login";
 import { requestToken } from "./store/slice/userSlice";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/" element={<MainPage />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/my-information" element={<MyInformationPage />} />
             </Routes>
           </GlobalLayout>
         </BrowserRouter>
