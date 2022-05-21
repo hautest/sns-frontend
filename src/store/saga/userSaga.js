@@ -1,5 +1,6 @@
 import axios from "axios";
-import { call, put, all, takeEvery } from "redux-saga/effects";
+import { call, put, all, takeEvery, select } from "redux-saga/effects";
+import { modalOff } from "../slice/postSlice";
 import {
   signUpRequest,
   signUpSuccess,
@@ -8,6 +9,9 @@ import {
   loginError,
   requestToken,
   setUserData,
+  patchUpdateRequest,
+  patchUpdateSuccess,
+  patchUpdateError,
 } from "../slice/userSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
@@ -61,9 +65,47 @@ function setRefreshTokenSaga({ payload: { refreshToken } }) {
   localStorage.setItem("refreshToken", refreshToken);
 }
 
+function patchUserApi(email, nickname, token) {
+  return axios.patch(
+    `${BASE_URL}/users`,
+    {
+      email,
+      nickname,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
+
+function findEmail(email) {
+  return axios.get(`${BASE_URL}/users/email`, {
+    params: { email },
+  });
+}
+
+function* patchUserSaga({ payload: { email, nickname } }) {
+  try {
+    const token = yield select(({ user }) => user.accessToken);
+    const {
+      data: { message, usable },
+    } = yield call(findEmail, email);
+    if (usable) {
+      yield call(patchUserApi, email, nickname, token);
+      yield put(patchUpdateSuccess({ email, nickname }));
+    } else {
+      alert(message);
+    }
+
+    yield put(modalOff());
+  } catch (error) {
+    console.dir(error);
+    yield put(patchUpdateError());
+  }
+}
+
 export function* userSaga() {
   yield all([takeEvery(signUpRequest, postSignUpSaga)]);
   yield all([takeEvery(loginRequest, loginSaga)]);
   yield all([takeEvery(requestToken, accessTokenSaga)]);
   yield all([takeEvery(setUserData, setRefreshTokenSaga)]);
+  yield all([takeEvery(patchUpdateRequest, patchUserSaga)]);
 }

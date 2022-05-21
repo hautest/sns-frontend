@@ -4,7 +4,7 @@ import styled, { css } from "styled-components";
 import { Button, Typography } from "../../components";
 import { flexColumn } from "../../styles/common";
 import { modalOn } from "../../store/slice/postSlice";
-import { InputAndButtonInModal } from "../../components/InputAndButtonInModal";
+import { EditMyInfoModal } from "./EditMyInfoModal";
 
 export function NicknameEmailBox({ email, nickname }) {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ export function NicknameEmailBox({ email, nickname }) {
 
   return (
     <Padding10>
-      {modalVisibleValue && <InputAndButtonInModal type="modify" />}
+      {modalVisibleValue && <EditMyInfoModal />}
       <StyledNicknameEmailBox>
         <FlexGapSpacingMd>
           <Typography variant="body1" color="black">

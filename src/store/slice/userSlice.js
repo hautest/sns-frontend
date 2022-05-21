@@ -37,6 +37,15 @@ const userSlice = createSlice({
       state.userData = null;
       state.accessToken = null;
     },
+    patchUpdateRequest(state) {
+      state.loading = true;
+    },
+    patchUpdateSuccess(state) {
+      state.loading = false;
+    },
+    patchUpdateError(state) {
+      state.loading = false;
+    },
   },
 });
 
@@ -52,4 +61,7 @@ export const {
   setUserData,
   loginError,
   resetLoginSuccess,
+  patchUpdateRequest,
+  patchUpdateSuccess,
+  patchUpdateError,
 } = userSlice.actions;
