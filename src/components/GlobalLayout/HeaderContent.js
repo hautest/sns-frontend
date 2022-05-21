@@ -16,9 +16,11 @@ export const HeaderContent = () => {
             {userIconValue}
           </Typography>
         </UserIcon>
-        <Typography variant="body1" color="black">
-          내정보
-        </Typography>
+        <Link to={"/my-information"}>
+          <Typography variant="body1" color="black">
+            내정보
+          </Typography>
+        </Link>
       </>
     );
   }

@@ -21,9 +21,11 @@ const PASSWORD_REGEX =
 
 export function SignUp() {
   const dispatch = useDispatch();
-  const { loading: isLoading, isSignUpSuccess } = useSelector(
-    (state) => state.user
-  );
+  const {
+    loading: isLoading,
+    isSignUpSuccess,
+    userData,
+  } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
@@ -67,11 +69,14 @@ export function SignUp() {
   };
 
   useEffect(() => {
+    if (userData) {
+      navigate("/");
+    }
     if (isSignUpSuccess === true) {
       navigate("/login");
       dispatch(resetSignUpSuccess());
     }
-  }, [isSignUpSuccess, dispatch, navigate]);
+  }, [isSignUpSuccess, dispatch, navigate, userData]);
 
   return (
     <StyledSignUp>
