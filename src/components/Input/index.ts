@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
-import { inputState } from "./constants";
+import { inputState, InputStateKey } from "./constants";
 
-export const Input = styled.input`
+export const Input = styled.input<{ state: InputStateKey }>`
   ${({ theme: { colors } }) => css`
     border: 1px solid ${colors.gray4};
     background: ${colors.white};
