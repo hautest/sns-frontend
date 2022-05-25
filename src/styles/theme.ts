@@ -25,3 +25,6 @@ export const theme = {
   colors,
   spacing,
 };
+
+export type ThemeColorType = keyof typeof colors;
+export type ThemeSpacingType = keyof typeof spacing;

@@ -26,3 +26,5 @@ export const TypographyConstant = {
     font-size: 10px;
   `,
 };
+
+export type TypographyConstantKey = keyof typeof TypographyConstant;
