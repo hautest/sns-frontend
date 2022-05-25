@@ -1,12 +1,23 @@
 import styled from "styled-components";
 import { createPortal } from "react-dom";
+import React from "react";
 
-function Portal({ children }) {
-  const element = document.querySelector("#modal");
+interface ModalInterface {
+  children: React.ReactNode;
+  visible: "visible" | "hidden";
+  onClick: void;
+}
+
+function Portal({ children }: any): React.ReactPortal {
+  const element = document.querySelector("#modal") as HTMLElement;
   return createPortal(children, element);
 }
 
-export function Modal({ children, visible, onClick }) {
+export const Modal: React.FC<ModalInterface> = function ({
+  children,
+  visible,
+  onClick,
+}) {
   return (
     <Portal>
       <StyledModal visible={visible} onClick={onClick}>
@@ -14,9 +25,9 @@ export function Modal({ children, visible, onClick }) {
       </StyledModal>
     </Portal>
   );
-}
+};
 
-const StyledModal = styled.div`
+const StyledModal: React.FC<ModalInterface> = styled.div<ModalInterface>`
   visibility: ${({ visible }) => (visible ? "visible" : "hidden")};
   display: flex;
   justify-content: center;
