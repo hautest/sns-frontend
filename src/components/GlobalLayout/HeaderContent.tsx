@@ -3,9 +3,13 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { Typography } from "../Typography";
+import { User } from "src/interface";
+import { RootState } from "src/store";
 
 export const HeaderContent = () => {
-  const userData = useSelector(({ user }) => user.userData);
+  const userData: User | null = useSelector(
+    (state: RootState) => state.user.userData
+  );
 
   if (!!userData) {
     const userIconValue = userData.nickname[0];

@@ -1,14 +1,17 @@
+import React from "react";
 import styled from "styled-components";
 import { Header } from "./Header";
 
-export function GlobalLayout({ children }) {
+export const GlobalLayout: React.FC<{ children: React.ReactNode }> = function ({
+  children,
+}) {
   return (
     <StyledGlobalLayout>
       <Header />
       <Main>{children}</Main>
     </StyledGlobalLayout>
   );
-}
+};
 
 const StyledGlobalLayout = styled.div`
   margin: 0 auto;
