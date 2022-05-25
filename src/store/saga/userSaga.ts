@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { call, put, all, takeEvery, select } from "redux-saga/effects";
 import { modalOff } from "../slice/postSlice";
 import {
@@ -16,7 +16,7 @@ import {
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-function signUpApi(email, nickname, password) {
+function signUpApi(email: string, nickname: string, password: string) {
   return axios.post(`${BASE_URL}/users`, {
     email,
     nickname,
@@ -24,35 +24,49 @@ function signUpApi(email, nickname, password) {
   });
 }
 
-function* postSignUpSaga({ payload: { email, nickname, password } }) {
+function* postSignUpSaga({
+  payload: { email, nickname, password },
+}: ReturnType<typeof signUpRequest>) {
   try {
     yield call(signUpApi, email, nickname, password);
     yield put(signUpSuccess());
   } catch (error) {
     yield put(signUpError());
-    alert(error.response.data.message);
+    if (error instanceof AxiosError) {
+      alert(error.response?.data.message);
+    } else {
+      console.error(error);
+    }
   }
 }
 
-function logInApi(email, password) {
+function logInApi(email: string, password: string) {
   return axios.post(`${BASE_URL}/auth/login`, { email, password });
 }
 
-function* loginSaga({ payload: { email, password } }) {
+function* loginSaga({
+  payload: { email, password },
+}: ReturnType<typeof loginRequest>) {
   try {
     const { data } = yield call(logInApi, email, password);
     yield put(setUserData(data));
   } catch (error) {
     yield put(loginError());
-    alert(error.response.data.message);
+    if (error instanceof AxiosError) {
+      alert(error.response?.data.message);
+    } else {
+      console.error(error);
+    }
   }
 }
 
-function accessTokenAPI(refreshToken) {
+function accessTokenAPI(refreshToken: string) {
   return axios.post(`${BASE_URL}/auth/access-token`, { refreshToken });
 }
 
-function* accessTokenSaga({ payload: pastRefreshToken }) {
+function* accessTokenSaga({
+  payload: pastRefreshToken,
+}: ReturnType<typeof requestToken>) {
   try {
     const { data } = yield call(accessTokenAPI, pastRefreshToken);
     yield put(setUserData(data));
@@ -61,11 +75,13 @@ function* accessTokenSaga({ payload: pastRefreshToken }) {
   }
 }
 
-function setRefreshTokenSaga({ payload: { refreshToken } }) {
+function setRefreshTokenSaga({
+  payload: { refreshToken },
+}: ReturnType<typeof setUserData>) {
   localStorage.setItem("refreshToken", refreshToken);
 }
 
-function patchUserApi(email, nickname, token) {
+function patchUserApi(email: string, nickname: string, token: string) {
   return axios.patch(
     `${BASE_URL}/users`,
     {
@@ -76,15 +92,17 @@ function patchUserApi(email, nickname, token) {
   );
 }
 
-function findEmail(email) {
+function findEmail(email: string) {
   return axios.get(`${BASE_URL}/users/email`, {
     params: { email },
   });
 }
 
-function* patchUserSaga({ payload: { email, nickname } }) {
+function* patchUserSaga({
+  payload: { email, nickname },
+}: ReturnType<typeof patchUpdateRequest>) {
   try {
-    const token = yield select(({ user }) => user.accessToken);
+    const token: string = yield select(({ user }) => user.accessToken);
     const {
       data: { message, usable },
     } = yield call(findEmail, email);

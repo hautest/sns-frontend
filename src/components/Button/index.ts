@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
-import { buttonSizes } from "./constants";
+import { buttonSizes, ButtonSizeKey } from "./constants";
 
-export const Button = styled.button`
+export const Button = styled.button<{ size: ButtonSizeKey }>`
   ${({ size }) => buttonSizes[size]};
   display: flex;
   align-items: center;

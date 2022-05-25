@@ -22,3 +22,5 @@ export const buttonSizes = {
     line-height: 16px;
   `,
 };
+
+export type ButtonSizeKey = keyof typeof buttonSizes;
