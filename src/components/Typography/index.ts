@@ -6,9 +6,10 @@ import { ThemeColorType } from "src/styles";
 
 export const Typography = styled.p<{
   variant: TypographyConstantKey;
-  color: ThemeColorType;
+  color?: ThemeColorType;
 }>`
   line-height: 100%;
   ${({ variant }) => TypographyConstant[variant]};
-  color: ${({ color, theme }) => theme.colors[color]}};
+  color: ${({ color, theme }) =>
+    color ? theme.colors[color] : theme.colors["black"]}};
 `;

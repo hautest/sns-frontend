@@ -12,7 +12,7 @@ const icons = {
 interface IconInterface {
   size: string;
   name: "close" | "loading";
-  color: ThemeColorType;
+  color?: ThemeColorType;
 }
 
 export const Icon = ({

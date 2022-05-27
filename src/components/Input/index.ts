@@ -1,7 +1,14 @@
 import styled, { css } from "styled-components";
 import { inputState, InputStateKey } from "./constants";
 
-export const Input = styled.input<{ state: InputStateKey }>`
+export const Input = styled.input<{
+  state?: InputStateKey;
+  // disable?: boolean;
+  // value: string | number | null;
+  // onChange: void;
+  // placeholder: string;
+  // maxLength: string;
+}>`
   ${({ theme: { colors } }) => css`
     border: 1px solid ${colors.gray4};
     background: ${colors.white};
@@ -17,7 +24,7 @@ export const Input = styled.input<{ state: InputStateKey }>`
       border: 1px solid ${colors.gray5};
     }
   `}
-  ${({ state }) => inputState[state]};
+  ${({ state }) => (state ? inputState[state] : null)};
   padding: 10px 12px;
   border-radius: 6px;
   font-weight: 400;
