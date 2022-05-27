@@ -1,8 +1,17 @@
 import styled, { keyframes } from "styled-components";
 
 import { Icon } from "./Icon";
+import { ThemeColorType } from "src/styles";
 
-export function LoadingIndicator({ size = "32px", color }) {
+interface LoadingIndicatorInterface {
+  size?: string;
+  color: ThemeColorType;
+}
+
+export function LoadingIndicator({
+  size = "32px",
+  color,
+}: LoadingIndicatorInterface) {
   return (
     <IconRotate>
       <Icon name="loading" size={size} color={color} />
