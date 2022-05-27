@@ -4,6 +4,16 @@ import styled, { css } from "styled-components";
 import { modalOff } from "../store/slice/postSlice";
 import { Icon, Button, Typography, Modal, LoadingIndicator } from ".";
 import { flexColumnCenter, flexColumn } from "../styles/common";
+import React from "react";
+
+interface InputAndButtonInModalInterface {
+  title: string;
+  disabled: boolean;
+  children: React.ReactNode;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  loading: boolean;
+  buttonText: string;
+}
 
 export function InputAndButtonInModal({
   title,
@@ -12,10 +22,10 @@ export function InputAndButtonInModal({
   onSubmit,
   loading,
   buttonText,
-}) {
+}: InputAndButtonInModalInterface) {
   const dispatch = useDispatch();
   return (
-    <Modal visible>
+    <Modal visible="visible">
       <ModalChildBox onSubmit={onSubmit}>
         <IconBox onClick={() => dispatch(modalOff())}>
           <Icon name="close" size="16px" />

@@ -5,7 +5,7 @@ import React from "react";
 interface ModalInterface {
   children: React.ReactNode;
   visible: "visible" | "hidden";
-  onClick: void;
+  onClick?: void;
 }
 
 function Portal({ children }: any): React.ReactPortal {
