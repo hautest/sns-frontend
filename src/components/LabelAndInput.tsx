@@ -1,7 +1,18 @@
 import styled from "styled-components";
+import React from "react";
 
 import { Typography } from "./Typography";
 import { Input } from "./Input";
+
+interface LabelAndInputInterface {
+  id?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  type?: "password";
+  status?: "default" | "success" | "error";
+  label: string;
+  placeholder: string;
+}
 
 export function LabelAndInput({
   id,
@@ -11,7 +22,7 @@ export function LabelAndInput({
   status,
   label,
   placeholder,
-}) {
+}: LabelAndInputInterface) {
   return (
     <StyledLabelAndInput>
       <Typography variant="body3" color="black" as="label" htmlFor={id}>
