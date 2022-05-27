@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-export const useInfiniteScroll = (callback, deps) => {
+export const useInfiniteScroll = (callback: () => void, deps: boolean) => {
   const ref = useRef(null);
 
   useEffect(() => {

@@ -1,11 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useInput } from "./useInput";
 
-export const useValidatedInputValue = (initialValue = "", regex) => {
+export const useValidatedInputValue = (initialValue = "", regex: RegExp) => {
   const [value, onValueChange] = useInput(initialValue);
   const [status, setStatus] = useState("default"); // default | error | success
 
-  const onChange = (event) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
