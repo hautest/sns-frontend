@@ -2,9 +2,6 @@ import axios, { AxiosError } from "axios";
 import { call, put, all, takeEvery, select } from "redux-saga/effects";
 import { modalOff } from "../slice/postSlice";
 import {
-  signUpRequest,
-  signUpSuccess,
-  signUpError,
   loginRequest,
   loginError,
   requestToken,
@@ -15,30 +12,6 @@ import {
 } from "../slice/userSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
-function signUpApi(email: string, nickname: string, password: string) {
-  return axios.post(`${BASE_URL}/users`, {
-    email,
-    nickname,
-    password,
-  });
-}
-
-function* postSignUpSaga({
-  payload: { email, nickname, password },
-}: ReturnType<typeof signUpRequest>) {
-  try {
-    yield call(signUpApi, email, nickname, password);
-    yield put(signUpSuccess());
-  } catch (error) {
-    yield put(signUpError());
-    if (error instanceof AxiosError) {
-      alert(error.response?.data.message);
-    } else {
-      console.error(error);
-    }
-  }
-}
 
 function logInApi(email: string, password: string) {
   return axios.post(`${BASE_URL}/auth/login`, { email, password });
@@ -121,7 +94,6 @@ function* patchUserSaga({
 }
 
 export function* userSaga() {
-  yield all([takeEvery(signUpRequest, postSignUpSaga)]);
   yield all([takeEvery(loginRequest, loginSaga)]);
   yield all([takeEvery(requestToken, accessTokenSaga)]);
   yield all([takeEvery(setUserData, setRefreshTokenSaga)]);
