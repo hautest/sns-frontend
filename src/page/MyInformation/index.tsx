@@ -1,4 +1,3 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -6,10 +5,12 @@ import { NicknameEmailBox } from "./NicknameEmailBox";
 import { useNavigate } from "react-router-dom";
 import { MyPosts } from "./MyPosts";
 import { postPageLayout } from "../../styles/common";
+import { useAppSelector, useAppDispatch } from "src/store";
+import { ConditionalRender } from "src/components";
 
 export function MyInformationPage() {
-  const userData = useSelector(({ user }) => user.userData);
-  const dispatch = useDispatch();
+  const userData = useAppSelector(({ user }) => user.userData);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,10 +20,18 @@ export function MyInformationPage() {
   }, [dispatch, navigate, userData]);
 
   return (
-    <StyledMyInformationPage>
-      <NicknameEmailBox email={userData?.email} nickname={userData?.nickname} />
-      <MyPosts />
-    </StyledMyInformationPage>
+    <ConditionalRender
+      condition={!!userData}
+      onTrue={
+        <StyledMyInformationPage>
+          <NicknameEmailBox
+            email={userData!.email}
+            nickname={userData!.nickname}
+          />
+          <MyPosts />
+        </StyledMyInformationPage>
+      }
+    />
   );
 }
 

@@ -1,16 +1,16 @@
-import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { PostItem, LoadingIndicator } from "../../components";
 import { useInfiniteScroll } from "../../hooks";
 import { postItemLayout } from "../../styles/common";
 import { getMyPostsRequest } from "../../store/slice/postSlice";
+import { useAppSelector, useAppDispatch } from "src/store";
 
 export function MyPosts() {
-  const { data, hasMore } = useSelector(({ post }) => post.myPosts);
-  const { loading } = useSelector(({ post }) => post);
+  const { data, hasMore } = useAppSelector(({ post }) => post.myPosts);
+  const { loading } = useAppSelector(({ post }) => post);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { ref } = useInfiniteScroll(() => {
     if (hasMore) dispatch(getMyPostsRequest());
@@ -25,7 +25,7 @@ export function MyPosts() {
       </StyledMyPosts>
       <div ref={ref}></div>
       <LoadingIconBox>
-        {loading && <LoadingIndicator size="16px" />}
+        {loading && <LoadingIndicator size="md" />}
       </LoadingIconBox>
     </>
   );

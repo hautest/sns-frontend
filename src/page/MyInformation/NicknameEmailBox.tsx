@@ -1,14 +1,21 @@
-import { useDispatch, useSelector } from "react-redux";
 import styled, { css } from "styled-components";
 
 import { Button, Typography } from "../../components";
 import { flexColumn } from "../../styles/common";
 import { modalOn } from "../../store/slice/postSlice";
 import { EditMyInfoModal } from "./EditMyInfoModal";
+import { useAppSelector, useAppDispatch } from "src/store";
 
-export function NicknameEmailBox({ email, nickname }) {
-  const dispatch = useDispatch();
-  const modalVisibleValue = useSelector(({ post }) => post.modalVisibleValue);
+interface NicknameEmailBoxProps {
+  email: string;
+  nickname: string;
+}
+
+export function NicknameEmailBox({ email, nickname }: NicknameEmailBoxProps) {
+  const dispatch = useAppDispatch();
+  const modalVisibleValue = useAppSelector(
+    ({ post }) => post.modalVisibleValue
+  );
 
   const handleOnclick = () => {
     dispatch(modalOn());

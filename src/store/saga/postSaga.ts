@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import {
   call,
   put,
@@ -7,6 +7,7 @@ import {
   select,
   takeEvery,
 } from "redux-saga/effects";
+import { GetComment, PostItem } from "src/interface";
 
 import {
   getPostRequest,
@@ -28,7 +29,7 @@ import {
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
-function getPostAPI(lastItemId) {
+function getPostAPI(lastItemId: string) {
   return axios.get(`${BASE_URL}/posts`, {
     params: { take: 5, lastItemId },
   });
@@ -36,19 +37,24 @@ function getPostAPI(lastItemId) {
 
 function* getPostSaga() {
   try {
-    const lastItemId = yield select(({ post }) => post.posts.lastItemId);
+    const lastItemId: string = yield select(
+      ({ post }) => post.posts.lastItemId
+    );
     const {
       data: { posts, lastId },
     } = yield call(getPostAPI, lastItemId);
+    console.log(posts, lastId);
     yield put(getPostSuccess({ posts, lastId, targetField: "posts" }));
   } catch (error) {
     yield put(getPostError);
     console.log(error);
-    alert(error.response.data.message);
+    if (error instanceof AxiosError) {
+      alert(error.response?.data.message);
+    }
   }
 }
 
-function postCreatePost(desc, title, token) {
+function postCreatePost(desc: string, title: string, token: string) {
   return axios.post(
     `${BASE_URL}/posts`,
     { desc, title },
@@ -58,10 +64,17 @@ function postCreatePost(desc, title, token) {
   );
 }
 
-function* createPostsaga({ payload: { desc, title } }) {
+function* createPostsaga({
+  payload: { desc, title },
+}: ReturnType<typeof createPostRequest>) {
   try {
-    const token = yield select(({ user }) => user.accessToken);
-    const { data } = yield call(postCreatePost, desc, title, token);
+    const token: string = yield select(({ user }) => user.accessToken);
+    const { data }: { data: PostItem } = yield call(
+      postCreatePost,
+      desc,
+      title,
+      token
+    );
     yield put(createPostSuccess(data));
     alert("새 글 작성 완료");
     yield put(modalOff());
@@ -72,7 +85,7 @@ function* createPostsaga({ payload: { desc, title } }) {
   }
 }
 
-function postCommentAPI(postId, desc, token) {
+function postCommentAPI(postId: string, desc: string, token: string) {
   return axios.post(
     `${BASE_URL}/comments`,
     { postId, desc },
@@ -80,22 +93,30 @@ function postCommentAPI(postId, desc, token) {
   );
 }
 
-function* createCommentsaga({ payload: { postId, desc } }) {
+function* createCommentsaga({
+  payload: { postId, desc },
+}: ReturnType<typeof createCommentRequest>) {
   try {
     const {
       userData: { nickname },
       accessToken,
     } = yield select(({ user }) => user);
-    const { data } = yield call(postCommentAPI, postId, desc, accessToken);
+
+    const { data }: { data: GetComment } = yield call(
+      postCommentAPI,
+      postId,
+      desc,
+      accessToken
+    );
     yield put(createCommentSuccess({ data, nickname }));
   } catch (error) {
     console.dir(error);
-    yield put(createCommentError);
+    yield put(createCommentError());
     alert("댓글 작성 실패");
   }
 }
 
-function getMyPostsAPI(myPostsLastItemId, token) {
+function getMyPostsAPI(myPostsLastItemId: string, token: string) {
   return axios.get(`${BASE_URL}/posts/my`, {
     params: { take: 5, lastItemId: myPostsLastItemId },
     headers: { Authorization: `Bearer ${token}` },
@@ -104,13 +125,17 @@ function getMyPostsAPI(myPostsLastItemId, token) {
 
 function* getMyPostSaga() {
   try {
-    const myPostsLastItemId = yield select(
+    const myPostsLastItemId: string = yield select(
       ({ post }) => post.myPosts.lastItemId
     );
-    const token = yield select(({ user }) => user.accessToken);
+    const token: string = yield select(({ user }) => user.accessToken);
     const {
       data: { posts, lastId },
-    } = yield call(getMyPostsAPI, myPostsLastItemId, token);
+    }: { data: { posts: PostItem[]; lastId: string } } = yield call(
+      getMyPostsAPI,
+      myPostsLastItemId,
+      token
+    );
     yield put(getPostSuccess({ posts, lastId, targetField: "myPosts" }));
   } catch (error) {
     yield put(getMyPostsError());
@@ -119,7 +144,7 @@ function* getMyPostSaga() {
   }
 }
 
-function patchPostAPI(inputValue, token, id) {
+function patchPostAPI(inputValue: string, token: string, id: string) {
   return axios.patch(
     `${BASE_URL}/posts/${id}`,
     { desc: inputValue },
@@ -127,15 +152,19 @@ function patchPostAPI(inputValue, token, id) {
   );
 }
 
-function* patchPostSaga({ payload: { inputValue, id } }) {
+function* patchPostSaga({
+  payload: { inputValue, id },
+}: ReturnType<typeof patchPostRequest>) {
   try {
-    const token = yield select(({ user }) => user.accessToken);
+    const token: string = yield select(({ user }) => user.accessToken);
     yield call(patchPostAPI, inputValue, token, id);
     yield put(patchPostSuccess({ inputValue, id }));
   } catch (error) {
     yield put(patchPostError());
     console.log(error);
-    alert(error.response.data.message);
+    if (error instanceof AxiosError) {
+      alert(error.response?.data.message);
+    }
   }
 }
 

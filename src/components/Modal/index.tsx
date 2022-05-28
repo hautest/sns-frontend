@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { createPortal } from "react-dom";
-import React from "react";
+import { ReactNode, MouseEvent } from "react";
 
 interface ModalInterface {
-  children: React.ReactNode;
-  visible: "visible" | "hidden";
-  onClick?: void;
+  children: ReactNode;
+  visible: boolean;
+  onClick?: (event?: MouseEvent<HTMLDivElement>) => void;
 }
 
-function Portal({ children }: any): React.ReactPortal {
+function Portal({ children }: Pick<ModalInterface, "children">) {
   const element = document.querySelector("#modal") as HTMLElement;
   return createPortal(children, element);
 }

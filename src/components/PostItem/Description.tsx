@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -13,16 +13,25 @@ import {
 import { flexColumn } from "../../styles/common";
 import { useInput, useToggle } from "../../hooks";
 import { patchPostRequest } from "../../store/slice/postSlice";
+import { RootState } from "src/store";
 
-export function Description({ desc, id, authorId }) {
+interface DescriptionProps {
+  desc: string;
+  id: string;
+  authorId: string;
+}
+
+export function Description({ desc, id, authorId }: DescriptionProps) {
   const dispatch = useDispatch();
-  const userData = useSelector(({ user }) => user.userData);
-  const loading = useSelector(({ post }) => post.patchPostLoading === id);
+  const userData = useSelector((state: RootState) => state.user.userData);
+  const loading = useSelector(
+    (state: RootState) => state.post.patchPostLoading === id
+  );
 
   const [inputValue, onChangeInputValue] = useInput(desc);
   const [modifyDesc, toggleModifyDesc] = useToggle(false);
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(patchPostRequest({ inputValue, id }));
     toggleModifyDesc();
@@ -30,7 +39,7 @@ export function Description({ desc, id, authorId }) {
 
   const hasMoreDesc = desc.length > 200;
   const [showAll, setShowAll] = useState(!hasMoreDesc);
-  const descPreview = `${desc.substr(0, 200)}...`;
+  const descPreview = `${desc.substring(0, 200)}...`;
   const toggleShowAll = () => {
     setShowAll((prev) => !prev);
   };
@@ -41,7 +50,7 @@ export function Description({ desc, id, authorId }) {
     <DescBox>
       {!modifyDesc && (
         <div>
-          <Typography variant="body2">
+          <Typography variant="body2" color="black">
             {showAll ? desc : descPreview}
           </Typography>
           {hasMoreDesc && (
@@ -64,7 +73,7 @@ export function Description({ desc, id, authorId }) {
                 <FlexBox>
                   <Button size="xs">완료</Button>
                   <IconBox onClick={toggleModifyDesc}>
-                    <Icon name="close" onClick={toggleModifyDesc} />
+                    <Icon name="close" />
                   </IconBox>
                 </FlexBox>
               </StyledForm>
@@ -73,7 +82,7 @@ export function Description({ desc, id, authorId }) {
               <div>
                 <Button size="xs" onClick={toggleModifyDesc} disabled={loading}>
                   수정
-                  {loading && <LoadingIndicator size="12px" color="white" />}
+                  {loading && <LoadingIndicator size="sm" color="white" />}
                 </Button>
               </div>
             }

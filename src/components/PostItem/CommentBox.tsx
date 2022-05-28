@@ -3,8 +3,13 @@ import styled from "styled-components";
 import { Typography } from "..";
 import { flexColumn } from "../../styles/common";
 import { useToggle } from "../../hooks";
+import { Comment } from "src/interface";
 
-export function CommentBox({ comments }) {
+interface CommentBoxProps {
+  comments: Comment[];
+}
+
+export function CommentBox({ comments }: CommentBoxProps) {
   const [showAllComment, toggleShowAllComment] = useToggle(false);
 
   const isLengthOver3 = comments.length > 3;
@@ -16,7 +21,9 @@ export function CommentBox({ comments }) {
       {comments &&
         commentArr.map((data) => (
           <CommentNicknameDesc key={data.id}>
-            <Typography variant="body3">{data.commenter.nickname}</Typography>
+            <Typography variant="body3" color="black">
+              {data.commenter.nickname}
+            </Typography>
             <Desc>
               <Typography variant="body4" color="gray2">
                 {data.desc}
@@ -29,7 +36,7 @@ export function CommentBox({ comments }) {
           <Typography
             variant="body3"
             color="gray3"
-            onClick={toggleShowAllComment}
+            onClick={() => toggleShowAllComment}
           >
             {showAllComment ? "접기" : "댓글 모두 보기"}
           </Typography>

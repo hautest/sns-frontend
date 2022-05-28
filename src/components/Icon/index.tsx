@@ -2,26 +2,26 @@ import { useTheme } from "styled-components";
 import { ReactComponent as close } from "./close.svg";
 import { ReactComponent as loading } from "./loading.svg";
 
-import { ThemeColorType } from "src/styles";
+import { ThemeColorType, ThemeSpacingType } from "src/styles";
 
 const icons = {
   close,
   loading,
 };
 
-interface IconInterface {
-  size: string;
+interface IconProps {
+  size?: ThemeSpacingType;
   name: "close" | "loading";
   color?: ThemeColorType;
 }
 
-export const Icon = ({
-  size = "16px",
-  name,
-  color = "black",
-}: IconInterface) => {
+export const Icon = ({ size = "md", name, color = "black" }: IconProps) => {
   const IconComponent = icons[name];
-  const { colors } = useTheme();
+  const { colors, spacing } = useTheme();
 
-  return <IconComponent width={size} height={size} color={colors[color]} />;
+  const iconSize = spacing[size];
+
+  return (
+    <IconComponent width={iconSize} height={iconSize} color={colors[color]} />
+  );
 };

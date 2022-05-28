@@ -1,7 +1,12 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, DependencyList, useCallback } from "react";
 
-export const useInfiniteScroll = (callback: () => void, deps: boolean) => {
+export const useInfiniteScroll = (
+  callback: () => void,
+  deps: DependencyList
+) => {
   const ref = useRef(null);
+
+  const cb = useCallback(callback, deps);
 
   useEffect(() => {
     if (!!ref.current) {
@@ -9,7 +14,7 @@ export const useInfiniteScroll = (callback: () => void, deps: boolean) => {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            callback();
+            cb();
           }
         });
       });
@@ -18,7 +23,7 @@ export const useInfiniteScroll = (callback: () => void, deps: boolean) => {
         observer.unobserve(element);
       };
     }
-  }, deps);
+  }, [cb]);
 
   return { ref };
 };

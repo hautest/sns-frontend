@@ -1,15 +1,15 @@
 import styled, { keyframes } from "styled-components";
 
 import { Icon } from "./Icon";
-import { ThemeColorType } from "src/styles";
+import { ThemeColorType, ThemeSpacingType } from "src/styles";
 
 interface LoadingIndicatorInterface {
-  size?: string;
-  color: ThemeColorType;
+  size?: ThemeSpacingType;
+  color?: ThemeColorType;
 }
 
 export function LoadingIndicator({
-  size = "32px",
+  size = "lg",
   color,
 }: LoadingIndicatorInterface) {
   return (

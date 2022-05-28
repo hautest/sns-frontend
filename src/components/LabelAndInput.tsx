@@ -1,17 +1,18 @@
 import styled from "styled-components";
-import React from "react";
+import { ChangeEvent } from "react";
 
 import { Typography } from "./Typography";
 import { Input } from "./Input";
+import { InputStateKey } from "./Input/constants";
 
 interface LabelAndInputInterface {
   id?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   type?: "password";
-  status?: "default" | "success" | "error";
+  status?: InputStateKey;
   label: string;
-  placeholder: string;
+  placeholder?: string;
 }
 
 export function LabelAndInput({

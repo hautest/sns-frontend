@@ -1,16 +1,15 @@
-import { useSelector, useDispatch } from "react-redux";
-
 import { Input, InputAndButtonInModal } from "../../components";
 import { createPostRequest } from "../../store/slice/postSlice";
-
+import { FormEvent } from "react";
 import { useInput } from "../../hooks";
+import { useAppSelector, useAppDispatch } from "src/store";
 
 export function AddPostModal() {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(({ post }) => post.createPostLoading);
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(({ post }) => post.createPostLoading);
   const [desc, onChangeDesc] = useInput("");
   const [title, onChangeTitle] = useInput("");
-  const handleOnsubmit = (e) => {
+  const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createPostRequest({ title, desc }));
   };

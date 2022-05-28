@@ -11,5 +11,5 @@ export const Typography = styled.p<{
   line-height: 100%;
   ${({ variant }) => TypographyConstant[variant]};
   color: ${({ color, theme }) =>
-    color ? theme.colors[color] : theme.colors["black"]}};
+    color ? theme.colors[color] : theme.colors["black"]};
 `;

@@ -7,7 +7,7 @@ export const inputState = {
   error: css`
     border: 1px solid ${({ theme }) => theme.colors.warn};
   `,
-  default: css``,
+  default: "",
 };
 
 export type InputStateKey = keyof typeof inputState;

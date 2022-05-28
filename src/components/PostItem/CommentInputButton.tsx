@@ -1,31 +1,40 @@
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 
 import { flexSpaceBetween } from "../../styles/common";
 import { Input, Button, LoadingIndicator } from "..";
 import { useInput } from "../../hooks/useInput";
 import { createCommentRequest } from "../../store/slice/postSlice";
+import { useAppSelector, useAppDispatch } from "src/store";
 
-export function CommentInputButton({ id }) {
-  const loading = useSelector(({ post }) => post.createCommentLoading === id);
-  const dispatch = useDispatch();
+interface CommentInputButtonProps {
+  id: string;
+}
+
+const MAX_LENGTH = 100;
+
+export function CommentInputButton({ id }: CommentInputButtonProps) {
+  const loading = useAppSelector(
+    ({ post }) => post.createCommentLoading === id
+  );
+  const dispatch = useAppDispatch();
   const [desc, onChangeDesc, setDesc] = useInput("");
 
-  const handleOnsubmit = (e) => {
+  const handleOnsubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createCommentRequest({ postId: id, desc }));
     setDesc("");
   };
+
   return (
     <StyledCommentInputButton onSubmit={handleOnsubmit}>
       <Input
         placeholder="댓글 달기 (최대 100글자)"
-        maxLength="100"
+        maxLength={MAX_LENGTH}
         value={desc}
         onChange={onChangeDesc}
       />
       <Button size="sm" disabled={loading}>
-        게시 {loading && <LoadingIndicator size="14px" color="white" />}
+        게시 {loading && <LoadingIndicator size="md" color="white" />}
       </Button>
     </StyledCommentInputButton>
   );

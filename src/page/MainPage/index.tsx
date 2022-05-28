@@ -1,4 +1,3 @@
-import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import {
@@ -10,12 +9,13 @@ import { postPageLayout } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
 import { modalOn } from "../../store/slice/postSlice";
 import { AddPostModal } from "./AddPostModal";
+import { useAppSelector, useAppDispatch } from "src/store";
 
 export function MainPage() {
-  const isLoading = useSelector(({ post }) => post.loading);
-  const userData = useSelector(({ user }) => user.userData);
-  const modalVisible = useSelector(({ post }) => post.modalVisibleValue);
-  const dispatch = useDispatch();
+  const isLoading = useAppSelector(({ post }) => post.loading);
+  const userData = useAppSelector(({ user }) => user.userData);
+  const modalVisible = useAppSelector(({ post }) => post.modalVisibleValue);
+  const dispatch = useAppDispatch();
 
   const handleOnclickBtn = () => {
     dispatch(modalOn());
@@ -33,7 +33,7 @@ export function MainPage() {
       )}
       <ContentBox />
       <LoadingIconBox>
-        {isLoading && <LoadingIndicator size="16px" />}
+        {isLoading && <LoadingIndicator size="md" />}
       </LoadingIconBox>
     </MainBox>
   );

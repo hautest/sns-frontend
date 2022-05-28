@@ -1,14 +1,11 @@
 import styled, { css } from "styled-components";
 import { inputState, InputStateKey } from "./constants";
 
-export const Input = styled.input<{
+interface InputProps {
   state?: InputStateKey;
-  // disable?: boolean;
-  // value: string | number | null;
-  // onChange: void;
-  // placeholder: string;
-  // maxLength: string;
-}>`
+}
+
+export const Input = styled.input<InputProps>`
   ${({ theme: { colors } }) => css`
     border: 1px solid ${colors.gray4};
     background: ${colors.white};

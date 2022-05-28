@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, FormEvent } from "react";
 import {
   LabelAndInput,
   Button,
@@ -6,20 +6,20 @@ import {
   LoadingIndicator,
   FixedCenterPosition,
 } from "../components";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from "src/store";
 import { loginRequest } from "../store/slice/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useInput } from "../hooks";
 
 export function Login() {
-  const dispatch = useDispatch();
-  const { loading: isLoading, userData } = useSelector(({ user }) => user);
+  const dispatch = useAppDispatch();
+  const { loading: isLoading, userData } = useAppSelector(({ user }) => user);
 
   const [emailValue, onchangeEmailValue] = useInput("");
   const [passwordValue, onchangePasswordValue] = useInput("");
   const navigate = useNavigate();
 
-  const handleOnsubmit = (e) => {
+  const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(loginRequest({ email: emailValue, password: passwordValue }));
   };

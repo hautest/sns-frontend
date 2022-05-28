@@ -1,20 +1,32 @@
 import styled, { css } from "styled-components";
-import { useSelector } from "react-redux";
 
 import { Typography } from "..";
 import { flexSpaceBetween } from "../../styles/common";
 import { CommentBox } from "./CommentBox";
 import { CommentInputButton } from "./CommentInputButton";
 import { Description } from "./Description";
+import { PostItem as PostItemInterface } from "src/interface";
+import { useAppSelector } from "src/store";
 
-export function PostItem({ title, desc, id, author, comments, authorId }) {
-  const userData = useSelector(({ user }) => user.userData);
+export function PostItem({
+  title,
+  desc,
+  id,
+  author,
+  comments,
+  authorId,
+}: PostItemInterface) {
+  const userData = useAppSelector(({ user }) => user.userData);
 
   return (
     <MapContent key={id} id={id}>
       <TitleNicknameBox>
-        <Typography variant="subtitle">{title}</Typography>
-        <Typography variant="body1">{author.nickname}</Typography>
+        <Typography variant="subtitle" color="black">
+          {title}
+        </Typography>
+        <Typography variant="body1" color="black">
+          {author.nickname}
+        </Typography>
       </TitleNicknameBox>
 
       <Description desc={desc} authorId={authorId} id={id} />

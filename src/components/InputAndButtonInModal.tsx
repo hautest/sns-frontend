@@ -1,16 +1,16 @@
-import { useDispatch } from "react-redux";
 import styled, { css } from "styled-components";
+import { ReactNode, FormEvent } from "react";
 
 import { modalOff } from "../store/slice/postSlice";
 import { Icon, Button, Typography, Modal, LoadingIndicator } from ".";
 import { flexColumnCenter, flexColumn } from "../styles/common";
-import React from "react";
+import { useAppDispatch } from "src/store";
 
 interface InputAndButtonInModalInterface {
   title: string;
   disabled: boolean;
-  children: React.ReactNode;
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  children: ReactNode;
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   loading: boolean;
   buttonText: string;
 }
@@ -23,19 +23,19 @@ export function InputAndButtonInModal({
   loading,
   buttonText,
 }: InputAndButtonInModalInterface) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
-    <Modal visible="visible">
+    <Modal visible={true}>
       <ModalChildBox onSubmit={onSubmit}>
         <IconBox onClick={() => dispatch(modalOff())}>
-          <Icon name="close" size="16px" />
+          <Icon name="close" size="md" />
         </IconBox>
         <Typography variant="subtitle">{title}</Typography>
         <InputButtonBox>
           <InputBox>{children}</InputBox>
           <Button size="md" disabled={disabled}>
             {buttonText}
-            {loading && <LoadingIndicator size="16px" color="white" />}
+            {loading && <LoadingIndicator size="md" color="white" />}
           </Button>
         </InputButtonBox>
       </ModalChildBox>

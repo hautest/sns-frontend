@@ -1,21 +1,43 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PostItem, GetComment } from "src/interface";
+
+interface initialStateInterface {
+  loading: boolean;
+  createCommentLoading: null | string;
+  patchPostLoading: null | string;
+  createPostLoading: boolean;
+  posts: { data: PostItem[]; hasMore: boolean; lastItemId: null | string };
+  myPosts: { data: PostItem[]; hasMore: boolean; lastItemId: null | string };
+  modalVisibleValue: boolean;
+}
+
+const initialState: initialStateInterface = {
+  loading: false,
+  createCommentLoading: null,
+  patchPostLoading: null,
+  createPostLoading: false,
+  posts: { data: [], hasMore: true, lastItemId: null },
+  myPosts: { data: [], hasMore: true, lastItemId: null },
+  modalVisibleValue: false,
+};
 
 const postSlice = createSlice({
   name: "post",
-  initialState: {
-    loading: false,
-    createCommentLoading: null,
-    patchPostLoading: null,
-    createPostLoading: false,
-    posts: { data: [], hasMore: true, lastItemId: null },
-    myPosts: { data: [], hasMore: true, lastItemId: null },
-    modalVisibleValue: false,
-  },
+  initialState,
   reducers: {
     getPostRequest(state) {
       state.loading = true;
     },
-    getPostSuccess(state, { payload }) {
+    getPostSuccess(
+      state,
+      {
+        payload,
+      }: PayloadAction<{
+        posts: PostItem[];
+        lastId: string;
+        targetField: "posts" | "myPosts";
+      }>
+    ) {
       state.loading = false;
       const target = state[payload.targetField];
       if (!target.lastItemId || state.modalVisibleValue) {
@@ -35,22 +57,33 @@ const postSlice = createSlice({
     modalOff(state) {
       state.modalVisibleValue = false;
     },
-    createPostRequest(state) {
-      state.createPostLoading = true;
+    createPostRequest: {
+      reducer: (state) => {
+        state.createPostLoading = true;
+      },
+      prepare: (payload: { desc: string; title: string }) => ({
+        payload,
+      }),
     },
-    createPostSuccess(state, { payload }) {
+    createPostSuccess(state, { payload }: PayloadAction<PostItem>) {
       state.createPostLoading = false;
       state.posts.data = [payload, ...state.posts.data];
     },
     createPostError(state) {
       state.createPostLoading = false;
     },
-    createCommentRequest(state, { payload }) {
+    createCommentRequest(
+      state,
+      { payload }: PayloadAction<{ postId: string; desc: string }>
+    ) {
       state.createCommentLoading = payload.postId;
     },
-    createCommentSuccess(state, { payload }) {
+    createCommentSuccess(
+      state,
+      { payload }: PayloadAction<{ data: GetComment; nickname: string }>
+    ) {
       state.createCommentLoading = null;
-      const addComment = (data) => {
+      const addComment = (data: PostItem) => {
         if (data.id === payload.data.postId) {
           data.comments = [
             ...data.comments,
@@ -77,12 +110,18 @@ const postSlice = createSlice({
     getMyPostsError(state) {
       state.loading = false;
     },
-    patchPostRequest(state, { payload }) {
+    patchPostRequest(
+      state,
+      { payload }: PayloadAction<{ inputValue: string; id: string }>
+    ) {
       state.patchPostLoading = payload.id;
     },
-    patchPostSuccess(state, { payload }) {
+    patchPostSuccess(
+      state,
+      { payload }: PayloadAction<{ inputValue: string; id: string }>
+    ) {
       state.patchPostLoading = null;
-      const changeInput = (data) => {
+      const changeInput = (data: PostItem) => {
         if (data.id === payload.id) {
           data.desc = payload.inputValue;
         }

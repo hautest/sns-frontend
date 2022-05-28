@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, FormEvent } from "react";
+import { useAppSelector, useAppDispatch } from "src/store";
 
 import {
   Button,
@@ -20,12 +20,12 @@ const PASSWORD_REGEX =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&^])[A-Za-z\d$@$!%*#?&^]{10,}$/;
 
 export function SignUp() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const {
     loading: isLoading,
     isSignUpSuccess,
     userData,
-  } = useSelector((state) => state.user);
+  } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
@@ -53,11 +53,11 @@ export function SignUp() {
       label: "비밀번호 확인",
       type: "password",
     },
-  ];
+  ] as const;
 
   const buttonDisabled = inputArr.some(({ status }) => status !== "success");
 
-  const handleSignUp = (e) => {
+  const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(
       signUpRequest({
