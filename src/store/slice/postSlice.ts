@@ -65,7 +65,7 @@ const postSlice = createSlice({
         payload,
       }),
     },
-    createPostSuccess(state, { payload }: PayloadAction<PostItem>) {
+    createPostSuccess(state, { payload }) {
       state.createPostLoading = false;
       state.posts.data = [payload, ...state.posts.data];
     },
