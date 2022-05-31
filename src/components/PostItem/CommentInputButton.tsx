@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { FormEvent } from "react";
 
 import { flexSpaceBetween } from "../../styles/common";
 import { Input, Button, LoadingIndicator } from "..";
@@ -19,7 +20,7 @@ export function CommentInputButton({ id }: CommentInputButtonProps) {
   const dispatch = useAppDispatch();
   const [desc, onChangeDesc, setDesc] = useInput("");
 
-  const handleOnsubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createCommentRequest({ postId: id, desc }));
     setDesc("");

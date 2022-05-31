@@ -18,15 +18,14 @@ export function MyInformationPage() {
       navigate("/");
     }
   }, [dispatch, navigate, userData]);
-
   return (
     <ConditionalRender
       condition={!!userData}
       onTrue={
         <StyledMyInformationPage>
           <NicknameEmailBox
-            email={userData!.email}
-            nickname={userData!.nickname}
+            email={userData?.email}
+            nickname={userData?.nickname}
           />
           <MyPosts />
         </StyledMyInformationPage>

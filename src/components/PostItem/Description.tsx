@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, FormEvent } from "react";
 
 import {
   Button,
@@ -13,7 +12,7 @@ import {
 import { flexColumn } from "../../styles/common";
 import { useInput, useToggle } from "../../hooks";
 import { patchPostRequest } from "../../store/slice/postSlice";
-import { RootState } from "src/store";
+import { useAppSelector, useAppDispatch } from "src/store";
 
 interface DescriptionProps {
   desc: string;
@@ -22,16 +21,14 @@ interface DescriptionProps {
 }
 
 export function Description({ desc, id, authorId }: DescriptionProps) {
-  const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const loading = useSelector(
-    (state: RootState) => state.post.patchPostLoading === id
-  );
+  const dispatch = useAppDispatch();
+  const userData = useAppSelector(({ user }) => user.userData);
+  const loading = useAppSelector(({ post }) => post.patchPostLoading === id);
 
   const [inputValue, onChangeInputValue] = useInput(desc);
   const [modifyDesc, toggleModifyDesc] = useToggle(false);
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(patchPostRequest({ inputValue, id }));
     toggleModifyDesc();
