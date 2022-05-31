@@ -25,32 +25,6 @@ const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
-    getPostRequest(state) {
-      state.loading = true;
-    },
-    getPostSuccess(
-      state,
-      {
-        payload,
-      }: PayloadAction<{
-        posts: PostItem[];
-        lastId: string;
-        targetField: "posts" | "myPosts";
-      }>
-    ) {
-      state.loading = false;
-      const target = state[payload.targetField];
-      if (!target.lastItemId || state.modalVisibleValue) {
-        target.data = payload.posts;
-      } else {
-        target.data = [...target.data, ...payload.posts];
-      }
-      target.lastItemId = payload.posts[payload.posts.length - 1].id;
-      target.hasMore = target.lastItemId !== payload.lastId;
-    },
-    getPostError(state) {
-      state.loading = false;
-    },
     modalOn(state) {
       state.modalVisibleValue = true;
     },
@@ -137,9 +111,6 @@ const postSlice = createSlice({
 
 export const postReducer = postSlice.reducer;
 export const {
-  getPostRequest,
-  getPostSuccess,
-  getPostError,
   modalOn,
   modalOff,
   createPostRequest,

@@ -10,9 +10,6 @@ import {
 import { GetComment, PostItem } from "src/interface";
 
 import {
-  getPostRequest,
-  getPostSuccess,
-  getPostError,
   createPostRequest,
   createPostSuccess,
   createPostError,
@@ -20,39 +17,12 @@ import {
   createCommentRequest,
   createCommentSuccess,
   createCommentError,
-  getMyPostsRequest,
-  getMyPostsError,
   patchPostRequest,
   patchPostSuccess,
   patchPostError,
 } from "../slice/postSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
-function getPostAPI(lastItemId: string) {
-  return axios.get(`${BASE_URL}/posts`, {
-    params: { take: 5, lastItemId },
-  });
-}
-
-function* getPostSaga() {
-  try {
-    const lastItemId: string = yield select(
-      ({ post }) => post.posts.lastItemId
-    );
-    const {
-      data: { posts, lastId },
-    } = yield call(getPostAPI, lastItemId);
-    console.log(posts, lastId);
-    yield put(getPostSuccess({ posts, lastId, targetField: "posts" }));
-  } catch (error) {
-    yield put(getPostError);
-    console.log(error);
-    if (error instanceof AxiosError) {
-      alert(error.response?.data.message);
-    }
-  }
-}
 
 function postCreatePost(desc: string, title: string, token: string) {
   return axios.post(
@@ -116,34 +86,6 @@ function* createCommentsaga({
   }
 }
 
-function getMyPostsAPI(myPostsLastItemId: string, token: string) {
-  return axios.get(`${BASE_URL}/posts/my`, {
-    params: { take: 5, lastItemId: myPostsLastItemId },
-    headers: { Authorization: `Bearer ${token}` },
-  });
-}
-
-function* getMyPostSaga() {
-  try {
-    const myPostsLastItemId: string = yield select(
-      ({ post }) => post.myPosts.lastItemId
-    );
-    const token: string = yield select(({ user }) => user.accessToken);
-    const {
-      data: { posts, lastId },
-    }: { data: { posts: PostItem[]; lastId: string } } = yield call(
-      getMyPostsAPI,
-      myPostsLastItemId,
-      token
-    );
-    yield put(getPostSuccess({ posts, lastId, targetField: "myPosts" }));
-  } catch (error) {
-    yield put(getMyPostsError());
-    console.log(error);
-    alert("게시물이 없습니다.");
-  }
-}
-
 function patchPostAPI(inputValue: string, token: string, id: string) {
   return axios.patch(
     `${BASE_URL}/posts/${id}`,
@@ -169,9 +111,7 @@ function* patchPostSaga({
 }
 
 export function* postSaga() {
-  yield all([takeLatest(getPostRequest, getPostSaga)]);
   yield all([takeEvery(createPostRequest, createPostsaga)]);
   yield all([takeEvery(createCommentRequest, createCommentsaga)]);
-  yield all([takeLatest(getMyPostsRequest, getMyPostSaga)]);
   yield all([takeLatest(patchPostRequest, patchPostSaga)]);
 }
