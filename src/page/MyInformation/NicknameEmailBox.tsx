@@ -1,29 +1,26 @@
 import styled, { css } from "styled-components";
+import { useRecoilState } from "recoil";
 
 import { Button, Typography } from "../../components";
 import { flexColumn } from "../../styles/common";
-import { modalOn } from "../../store/slice/postSlice";
 import { EditMyInfoModal } from "./EditMyInfoModal";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { addNewPostModalAtom } from "src/store";
 
 interface NicknameEmailBoxProps {
-  email: string;
-  nickname: string;
+  email?: string;
+  nickname?: string;
 }
 
 export function NicknameEmailBox({ email, nickname }: NicknameEmailBoxProps) {
-  const dispatch = useAppDispatch();
-  const modalVisibleValue = useAppSelector(
-    ({ post }) => post.modalVisibleValue
-  );
+  const [showModal, setShowModal] = useRecoilState(addNewPostModalAtom);
 
-  const handleOnclick = () => {
-    dispatch(modalOn());
+  const handleOnclickBtn = () => {
+    setShowModal(true);
   };
 
   return (
     <Padding10>
-      {modalVisibleValue && <EditMyInfoModal />}
+      {showModal && <EditMyInfoModal />}
       <StyledNicknameEmailBox>
         <FlexGapSpacingMd>
           <Typography variant="body1" color="black">
@@ -42,7 +39,7 @@ export function NicknameEmailBox({ email, nickname }: NicknameEmailBoxProps) {
           </Typography>
         </FlexGapSpacingMd>
         <div>
-          <Button size="xs" onClick={handleOnclick}>
+          <Button size="xs" onClick={handleOnclickBtn}>
             수정하기
           </Button>
         </div>
