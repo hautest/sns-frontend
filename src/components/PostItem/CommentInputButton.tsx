@@ -4,8 +4,7 @@ import { FormEvent } from "react";
 import { flexSpaceBetween } from "../../styles/common";
 import { Input, Button, LoadingIndicator } from "..";
 import { useInput } from "../../hooks/useInput";
-import { createCommentRequest } from "../../store/slice/postSlice";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { useCreateComment } from "./useCreateComment";
 
 interface CommentInputButtonProps {
   id: string;
@@ -14,17 +13,15 @@ interface CommentInputButtonProps {
 const MAX_LENGTH = 100;
 
 export function CommentInputButton({ id }: CommentInputButtonProps) {
-  const loading = useAppSelector(
-    ({ post }) => post.createCommentLoading === id
-  );
-  const dispatch = useAppDispatch();
   const [desc, onChangeDesc, setDesc] = useInput("");
+  const { data, mutate, isLoading } = useCreateComment();
 
   const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createCommentRequest({ postId: id, desc }));
+    mutate({ postId: id, desc });
     setDesc("");
   };
+  console.log(data);
 
   return (
     <StyledCommentInputButton onSubmit={handleOnsubmit}>
@@ -34,8 +31,8 @@ export function CommentInputButton({ id }: CommentInputButtonProps) {
         value={desc}
         onChange={onChangeDesc}
       />
-      <Button size="sm" disabled={loading}>
-        게시 {loading && <LoadingIndicator size="md" color="white" />}
+      <Button size="sm" disabled={isLoading}>
+        게시 {isLoading && <LoadingIndicator size="md" color="white" />}
       </Button>
     </StyledCommentInputButton>
   );

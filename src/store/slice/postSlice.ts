@@ -31,12 +31,6 @@ const postSlice = createSlice({
     modalOff(state) {
       state.modalVisibleValue = false;
     },
-    createCommentRequest(
-      state,
-      { payload }: PayloadAction<{ postId: string; desc: string }>
-    ) {
-      state.createCommentLoading = payload.postId;
-    },
     createCommentSuccess(
       state,
       { payload }: PayloadAction<{ data: GetComment; nickname: string }>
@@ -98,7 +92,6 @@ export const postReducer = postSlice.reducer;
 export const {
   modalOn,
   modalOff,
-  createCommentRequest,
   createCommentSuccess,
   createCommentError,
   getMyPostsRequest,

@@ -36,7 +36,7 @@ export function CommentBox({ comments }: CommentBoxProps) {
           <Typography
             variant="body3"
             color="gray3"
-            onClick={() => toggleShowAllComment}
+            onClick={toggleShowAllComment}
           >
             {showAllComment ? "접기" : "댓글 모두 보기"}
           </Typography>
