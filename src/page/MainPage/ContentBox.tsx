@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { postItemLayout } from "../../styles/common";
 import { useInfiniteScroll } from "../../hooks";
 import { PostItem, LoadingIndicator } from "../../components";
-import { usePostsQuery } from "./usePostsQuery";
+import { usePostsQuery } from "./query/usePostsQuery";
 
 export function ContentBox() {
   const { data, hasNextPage, fetchNextPage, isFetching } = usePostsQuery();

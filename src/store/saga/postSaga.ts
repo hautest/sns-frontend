@@ -7,13 +7,9 @@ import {
   select,
   takeEvery,
 } from "redux-saga/effects";
-import { GetComment, PostItem } from "src/interface";
+import { GetComment } from "src/interface";
 
 import {
-  createPostRequest,
-  createPostSuccess,
-  createPostError,
-  modalOff,
   createCommentRequest,
   createCommentSuccess,
   createCommentError,
@@ -23,37 +19,6 @@ import {
 } from "../slice/postSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
-function postCreatePost(desc: string, title: string, token: string) {
-  return axios.post(
-    `${BASE_URL}/posts`,
-    { desc, title },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-}
-
-function* createPostsaga({
-  payload: { desc, title },
-}: ReturnType<typeof createPostRequest>) {
-  try {
-    const token: string = yield select(({ user }) => user.accessToken);
-    const { data }: { data: PostItem } = yield call(
-      postCreatePost,
-      desc,
-      title,
-      token
-    );
-    yield put(createPostSuccess(data));
-    alert("새 글 작성 완료");
-    yield put(modalOff());
-  } catch (error) {
-    console.dir(error);
-    yield put(createPostError());
-    alert("새 글 작성 실패");
-  }
-}
 
 function postCommentAPI(postId: string, desc: string, token: string) {
   return axios.post(
@@ -111,7 +76,6 @@ function* patchPostSaga({
 }
 
 export function* postSaga() {
-  yield all([takeEvery(createPostRequest, createPostsaga)]);
   yield all([takeEvery(createCommentRequest, createCommentsaga)]);
   yield all([takeLatest(patchPostRequest, patchPostSaga)]);
 }

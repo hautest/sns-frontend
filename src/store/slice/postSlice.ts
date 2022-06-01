@@ -31,21 +31,6 @@ const postSlice = createSlice({
     modalOff(state) {
       state.modalVisibleValue = false;
     },
-    createPostRequest: {
-      reducer: (state) => {
-        state.createPostLoading = true;
-      },
-      prepare: (payload: { desc: string; title: string }) => ({
-        payload,
-      }),
-    },
-    createPostSuccess(state, { payload }) {
-      state.createPostLoading = false;
-      state.posts.data = [payload, ...state.posts.data];
-    },
-    createPostError(state) {
-      state.createPostLoading = false;
-    },
     createCommentRequest(
       state,
       { payload }: PayloadAction<{ postId: string; desc: string }>
@@ -113,9 +98,6 @@ export const postReducer = postSlice.reducer;
 export const {
   modalOn,
   modalOff,
-  createPostRequest,
-  createPostSuccess,
-  createPostError,
   createCommentRequest,
   createCommentSuccess,
   createCommentError,

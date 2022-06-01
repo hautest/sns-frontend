@@ -1,17 +1,16 @@
 import { Input, InputAndButtonInModal } from "../../components";
-import { createPostRequest } from "../../store/slice/postSlice";
 import { FormEvent } from "react";
 import { useInput } from "../../hooks";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { useCreatePost } from "./query/useCreatePost";
 
 export function AddPostModal() {
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(({ post }) => post.createPostLoading);
   const [desc, onChangeDesc] = useInput("");
   const [title, onChangeTitle] = useInput("");
+  const { mutate, isLoading } = useCreatePost();
+
   const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createPostRequest({ title, desc }));
+    mutate({ title, desc });
   };
 
   return (
