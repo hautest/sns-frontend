@@ -1,17 +1,15 @@
 import styled from "styled-components";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import { Button, FixedCenterPosition } from "../../components";
 import { postPageLayout } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
 import { AddPostModal } from "./AddPostModal";
-import { useAppSelector, addNewPostModalAtom } from "src/store";
+import { addNewPostModalAtom, userState } from "src/store";
 
 export function MainPage() {
-  const userData = useAppSelector(({ user }) => user.userData);
-
   const [showModal, setShowModal] = useRecoilState(addNewPostModalAtom);
-
+  const userData = useRecoilValue(userState);
   const handleOnclickBtn = () => {
     setShowModal(true);
   };
@@ -19,7 +17,7 @@ export function MainPage() {
   return (
     <MainBox>
       {showModal && <AddPostModal />}
-      {!!userData && (
+      {!!userData.accessToken && (
         <FixedCenterPosition>
           <Button size="lg" onClick={handleOnclickBtn}>
             새 글 작성

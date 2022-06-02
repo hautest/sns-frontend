@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, FormEvent } from "react";
+import { useRecoilValue } from "recoil";
 
 import {
   Button,
@@ -12,7 +13,7 @@ import {
 import { flexColumn } from "../../styles/common";
 import { useInput, useToggle } from "../../hooks";
 import { usePatchPost } from "./query/usePatchPost";
-import { useAppSelector } from "src/store";
+import { userState } from "src/store";
 
 interface DescriptionProps {
   desc: string;
@@ -21,7 +22,7 @@ interface DescriptionProps {
 }
 
 export function Description({ desc, id, authorId }: DescriptionProps) {
-  const userData = useAppSelector(({ user }) => user.userData);
+  const userData = useRecoilValue(userState);
   const [inputValue, onChangeInputValue] = useInput(desc);
   const [modifyDesc, toggleModifyDesc] = useToggle(false);
   const { mutate, isLoading } = usePatchPost();
@@ -39,7 +40,7 @@ export function Description({ desc, id, authorId }: DescriptionProps) {
     setShowAll((prev) => !prev);
   };
 
-  const isMyPost = userData?.id === authorId;
+  const isMyPost = userData.user.id === authorId;
 
   return (
     <DescBox>

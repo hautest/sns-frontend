@@ -20,7 +20,7 @@ export const useLogin = () => {
     {
       onSuccess: ({ data }) => {
         setUserState(data);
-        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
       },
       onError: (error) => {
         console.dir(error);

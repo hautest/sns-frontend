@@ -26,24 +26,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserData(
-      state,
-      {
-        payload,
-      }: PayloadAction<{
-        user: User;
-        accessToken: string;
-        refreshToken: string;
-      }>
-    ) {
-      state.loading = false;
-      state.userData = payload.user;
-      state.accessToken = payload.accessToken;
-    },
-    resetLoginSuccess(state) {
-      state.userData = null;
-      state.accessToken = null;
-    },
     patchUpdateRequest: {
       reducer: (state) => {
         state.loading = true;
@@ -71,10 +53,5 @@ const userSlice = createSlice({
 export const requestToken = createAction<string>("resquestToken");
 
 export const signUpReducer = userSlice.reducer;
-export const {
-  setUserData,
-  resetLoginSuccess,
-  patchUpdateRequest,
-  patchUpdateSuccess,
-  patchUpdateError,
-} = userSlice.actions;
+export const { patchUpdateRequest, patchUpdateSuccess, patchUpdateError } =
+  userSlice.actions;

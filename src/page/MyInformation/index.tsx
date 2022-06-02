@@ -1,31 +1,30 @@
 import { useEffect } from "react";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 
 import { NicknameEmailBox } from "./NicknameEmailBox";
 import { useNavigate } from "react-router-dom";
 import { MyPosts } from "./MyPosts";
 import { postPageLayout } from "../../styles/common";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { userState } from "src/store";
 import { ConditionalRender } from "src/components";
 
 export function MyInformationPage() {
-  const userData = useAppSelector(({ user }) => user.userData);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const userData = useRecoilValue(userState);
   useEffect(() => {
-    if (!userData) {
+    if (!userData.accessToken) {
       navigate("/");
     }
-  }, [dispatch, navigate, userData]);
+  }, [navigate, userData]);
   return (
     <ConditionalRender
-      condition={!!userData}
+      condition={!!userData.accessToken}
       onTrue={
         <StyledMyInformationPage>
           <NicknameEmailBox
-            email={userData?.email}
-            nickname={userData?.nickname}
+            email={userData?.user.email}
+            nickname={userData?.user.nickname}
           />
           <MyPosts />
         </StyledMyInformationPage>

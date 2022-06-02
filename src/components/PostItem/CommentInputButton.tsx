@@ -14,7 +14,7 @@ const MAX_LENGTH = 100;
 
 export function CommentInputButton({ id }: CommentInputButtonProps) {
   const [desc, onChangeDesc, setDesc] = useInput("");
-  const { data, mutate, isLoading } = useCreateComment();
+  const { mutate, isLoading } = useCreateComment();
 
   const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

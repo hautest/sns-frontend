@@ -1,35 +1,12 @@
 import axios from "axios";
 import { call, put, all, takeEvery, select } from "redux-saga/effects";
 import {
-  requestToken,
-  setUserData,
   patchUpdateRequest,
   patchUpdateSuccess,
   patchUpdateError,
 } from "../slice/userSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
-function accessTokenAPI(refreshToken: string) {
-  return axios.post(`${BASE_URL}/auth/access-token`, { refreshToken });
-}
-
-function* accessTokenSaga({
-  payload: pastRefreshToken,
-}: ReturnType<typeof requestToken>) {
-  try {
-    const { data } = yield call(accessTokenAPI, pastRefreshToken);
-    yield put(setUserData(data));
-  } catch (error) {
-    console.dir(error);
-  }
-}
-
-function setRefreshTokenSaga({
-  payload: { refreshToken },
-}: ReturnType<typeof setUserData>) {
-  localStorage.setItem("refreshToken", refreshToken);
-}
 
 function patchUserApi(email: string, nickname: string, token: string) {
   return axios.patch(
@@ -69,7 +46,5 @@ function* patchUserSaga({
 }
 
 export function* userSaga() {
-  yield all([takeEvery(requestToken, accessTokenSaga)]);
-  yield all([takeEvery(setUserData, setRefreshTokenSaga)]);
   yield all([takeEvery(patchUpdateRequest, patchUserSaga)]);
 }

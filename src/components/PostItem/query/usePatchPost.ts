@@ -1,7 +1,8 @@
 import { axiosInstance } from "src/utils";
 import { useMutation, useQueryClient } from "react-query";
+import { useRecoilValue } from "recoil";
 
-import { useAppSelector } from "src/store";
+import { userState } from "src/store";
 
 function patchPostAPI(inputValue: string, id: string, token: null | string) {
   return axiosInstance.patch(
@@ -18,7 +19,7 @@ interface useMutationProps {
 
 export const usePatchPost = () => {
   const queryClient = useQueryClient();
-  const token = useAppSelector(({ user }) => user.accessToken);
+  const { accessToken: token } = useRecoilValue(userState);
   return useMutation(
     ({ inputValue, id }: useMutationProps) =>
       patchPostAPI(inputValue, id, token),

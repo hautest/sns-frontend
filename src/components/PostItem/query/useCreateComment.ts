@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from "react-query";
+import { useRecoilValue } from "recoil";
 
 import { axiosInstance } from "src/utils";
-import { useAppSelector } from "src/store";
+import { userState } from "src/store";
 
 function postCommentAPI(postId: string, desc: string, token: null | string) {
   return axiosInstance.post(
@@ -17,7 +18,7 @@ interface useMutationProps {
 }
 
 export const useCreateComment = () => {
-  const token = useAppSelector(({ user }) => user.accessToken);
+  const { accessToken: token } = useRecoilValue(userState);
   const queryClient = useQueryClient();
   return useMutation(
     ({ postId, desc }: useMutationProps) => postCommentAPI(postId, desc, token),

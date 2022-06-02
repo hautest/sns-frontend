@@ -1,24 +1,38 @@
-import { ThemeProvider } from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useMutation } from "react-query";
+import { useSetRecoilState } from "recoil";
+
+import { ThemeProvider } from "styled-components";
 import { theme, GlobalStyle } from "./styles";
 import { MainPage } from "./page/MainPage";
 import { SignUp } from "./page/SignUp";
 import { MyInformationPage } from "./page/MyInformation";
 import { GlobalLayout } from "./components";
 import { Login } from "./page/Login/Login";
-import { requestToken } from "./store/slice/userSlice";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { axiosInstance } from "./utils";
+import { userState } from "./store";
 
 function App() {
-  const dispatch = useDispatch();
+  const { mutate } = useMutation(
+    (refreshToken: string) => {
+      return axiosInstance.post(`/auth/access-token`, { refreshToken });
+    },
+    {
+      onSuccess: (data) => {
+        setUserData(data.data);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+      },
+    }
+  );
+  const setUserData = useSetRecoilState(userState);
 
   useEffect(() => {
-    const pastRefreshToken = localStorage.getItem("refreshToken");
-    if (!!pastRefreshToken) {
-      dispatch(requestToken(pastRefreshToken));
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!!refreshToken) {
+      mutate(refreshToken);
     }
-  }, [dispatch]);
+  }, [mutate]);
 
   return (
     <>
