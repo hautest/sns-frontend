@@ -4,7 +4,7 @@ import { FormEvent } from "react";
 import { flexSpaceBetween } from "../../styles/common";
 import { Input, Button, LoadingIndicator } from "..";
 import { useInput } from "../../hooks/useInput";
-import { useCreateComment } from "./useCreateComment";
+import { useCreateComment } from "./query/useCreateComment";
 
 interface CommentInputButtonProps {
   id: string;
@@ -21,7 +21,6 @@ export function CommentInputButton({ id }: CommentInputButtonProps) {
     mutate({ postId: id, desc });
     setDesc("");
   };
-  console.log(data);
 
   return (
     <StyledCommentInputButton onSubmit={handleOnsubmit}>

@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import { call, put, all, takeEvery, select } from "redux-saga/effects";
-import { modalOff } from "../slice/postSlice";
 import {
   loginRequest,
   loginError,
@@ -85,8 +84,6 @@ function* patchUserSaga({
     } else {
       alert(message);
     }
-
-    yield put(modalOff());
   } catch (error) {
     console.dir(error);
     yield put(patchUpdateError());

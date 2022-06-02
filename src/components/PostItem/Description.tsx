@@ -11,8 +11,8 @@ import {
 } from "..";
 import { flexColumn } from "../../styles/common";
 import { useInput, useToggle } from "../../hooks";
-import { patchPostRequest } from "../../store/slice/postSlice";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { usePatchPost } from "./query/usePatchPost";
+import { useAppSelector } from "src/store";
 
 interface DescriptionProps {
   desc: string;
@@ -21,16 +21,14 @@ interface DescriptionProps {
 }
 
 export function Description({ desc, id, authorId }: DescriptionProps) {
-  const dispatch = useAppDispatch();
   const userData = useAppSelector(({ user }) => user.userData);
-  const loading = useAppSelector(({ post }) => post.patchPostLoading === id);
-
   const [inputValue, onChangeInputValue] = useInput(desc);
   const [modifyDesc, toggleModifyDesc] = useToggle(false);
+  const { mutate, isLoading } = usePatchPost();
 
   const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(patchPostRequest({ inputValue, id }));
+    mutate({ inputValue, id });
     toggleModifyDesc();
   };
 
@@ -77,9 +75,13 @@ export function Description({ desc, id, authorId }: DescriptionProps) {
             }
             onFalse={
               <div>
-                <Button size="xs" onClick={toggleModifyDesc} disabled={loading}>
+                <Button
+                  size="xs"
+                  onClick={toggleModifyDesc}
+                  disabled={isLoading}
+                >
                   수정
-                  {loading && <LoadingIndicator size="sm" color="white" />}
+                  {isLoading && <LoadingIndicator size="sm" color="white" />}
                 </Button>
               </div>
             }
