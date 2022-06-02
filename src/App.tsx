@@ -5,7 +5,7 @@ import { MainPage } from "./page/MainPage";
 import { SignUp } from "./page/SignUp";
 import { MyInformationPage } from "./page/MyInformation";
 import { GlobalLayout } from "./components";
-import { Login } from "./page/Login";
+import { Login } from "./page/Login/Login";
 import { requestToken } from "./store/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";

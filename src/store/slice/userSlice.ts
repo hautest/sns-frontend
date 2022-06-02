@@ -26,17 +26,6 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    resetSignUpSuccess(state) {
-      state.isSignUpSuccess = false;
-    },
-    loginRequest: {
-      reducer: (state) => {
-        state.loading = true;
-      },
-      prepare: (payload: Omit<CommonUserRequestParams, "nickname">) => ({
-        payload,
-      }),
-    },
     setUserData(
       state,
       {
@@ -50,9 +39,6 @@ const userSlice = createSlice({
       state.loading = false;
       state.userData = payload.user;
       state.accessToken = payload.accessToken;
-    },
-    loginError(state) {
-      state.loading = false;
     },
     resetLoginSuccess(state) {
       state.userData = null;
@@ -86,10 +72,7 @@ export const requestToken = createAction<string>("resquestToken");
 
 export const signUpReducer = userSlice.reducer;
 export const {
-  resetSignUpSuccess,
-  loginRequest,
   setUserData,
-  loginError,
   resetLoginSuccess,
   patchUpdateRequest,
   patchUpdateSuccess,

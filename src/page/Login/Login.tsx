@@ -1,31 +1,34 @@
 import { useEffect, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+
 import {
   LabelAndInput,
   Button,
   Modal,
   LoadingIndicator,
   FixedCenterPosition,
-} from "../components";
-import { useAppSelector, useAppDispatch } from "src/store";
-import { loginRequest } from "../store/slice/userSlice";
-import { useNavigate } from "react-router-dom";
-import { useInput } from "../hooks";
+} from "../../components";
+import { userState } from "src/store";
+import { useLogin } from "./useLogin";
+import { useInput } from "../../hooks";
 
 export function Login() {
-  const dispatch = useAppDispatch();
-  const { loading: isLoading, userData } = useAppSelector(({ user }) => user);
+  //const { userData } = useAppSelector(({ user }) => user);
+  const userData = useRecoilValue(userState);
 
   const [emailValue, onchangeEmailValue] = useInput("");
   const [passwordValue, onchangePasswordValue] = useInput("");
   const navigate = useNavigate();
+  const { mutate, isLoading } = useLogin();
 
   const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginRequest({ email: emailValue, password: passwordValue }));
+    mutate({ email: emailValue, password: passwordValue });
   };
 
   useEffect(() => {
-    if (!!userData) {
+    if (!!userData.accessToken) {
       navigate("/");
     }
   }, [userData, navigate]);

@@ -1,8 +1,6 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { call, put, all, takeEvery, select } from "redux-saga/effects";
 import {
-  loginRequest,
-  loginError,
   requestToken,
   setUserData,
   patchUpdateRequest,
@@ -11,26 +9,6 @@ import {
 } from "../slice/userSlice";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
-
-function logInApi(email: string, password: string) {
-  return axios.post(`${BASE_URL}/auth/login`, { email, password });
-}
-
-function* loginSaga({
-  payload: { email, password },
-}: ReturnType<typeof loginRequest>) {
-  try {
-    const { data } = yield call(logInApi, email, password);
-    yield put(setUserData(data));
-  } catch (error) {
-    yield put(loginError());
-    if (error instanceof AxiosError) {
-      alert(error.response?.data.message);
-    } else {
-      console.error(error);
-    }
-  }
-}
 
 function accessTokenAPI(refreshToken: string) {
   return axios.post(`${BASE_URL}/auth/access-token`, { refreshToken });
@@ -91,7 +69,6 @@ function* patchUserSaga({
 }
 
 export function* userSaga() {
-  yield all([takeEvery(loginRequest, loginSaga)]);
   yield all([takeEvery(requestToken, accessTokenSaga)]);
   yield all([takeEvery(setUserData, setRefreshTokenSaga)]);
   yield all([takeEvery(patchUpdateRequest, patchUserSaga)]);
