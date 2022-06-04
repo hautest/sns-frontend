@@ -3,29 +3,25 @@ import styled from "styled-components";
 import { PostItem, LoadingIndicator } from "../../components";
 import { useInfiniteScroll } from "../../hooks";
 import { postItemLayout } from "../../styles/common";
-import { getMyPostsRequest } from "../../store/slice/postSlice";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { useMyPostsQuery } from "./query/useMyPostsQuery";
 
 export function MyPosts() {
-  const { data, hasMore } = useAppSelector(({ post }) => post.myPosts);
-  const { loading } = useAppSelector(({ post }) => post);
-
-  const dispatch = useAppDispatch();
+  const { data, hasNextPage, fetchNextPage, isFetching } = useMyPostsQuery();
 
   const { ref } = useInfiniteScroll(() => {
-    if (hasMore) dispatch(getMyPostsRequest());
-  }, [hasMore]);
+    if (hasNextPage) fetchNextPage();
+  }, [hasNextPage]);
 
   return (
     <>
       <StyledMyPosts>
-        {data?.map((postsData) => (
-          <PostItem key={postsData.id} {...postsData} />
-        ))}
+        {data?.pages.map((page) =>
+          page.posts.map((post) => <PostItem key={post.id} {...post} />)
+        )}
       </StyledMyPosts>
       <div ref={ref}></div>
       <LoadingIconBox>
-        {loading && <LoadingIndicator size="md" />}
+        {isFetching && <LoadingIndicator size="md" />}
       </LoadingIconBox>
     </>
   );

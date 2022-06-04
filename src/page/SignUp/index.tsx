@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect, FormEvent } from "react";
-import { useAppSelector, useAppDispatch } from "src/store";
+import { useRecoilValue } from "recoil";
 
+import { userAtom } from "src/store";
 import {
   Button,
   LabelAndInput,
@@ -11,7 +12,7 @@ import {
   FixedCenterPosition,
 } from "../../components";
 import { useValidatedInputValue } from "../../hooks";
-import { signUpRequest, resetSignUpSuccess } from "../../store/slice/userSlice";
+import { useSignupMutation } from "./useSignupMutation";
 
 const EMAIL_REGEX =
   /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
@@ -20,12 +21,7 @@ const PASSWORD_REGEX =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&^])[A-Za-z\d$@$!%*#?&^]{10,}$/;
 
 export function SignUp() {
-  const dispatch = useAppDispatch();
-  const {
-    loading: isLoading,
-    isSignUpSuccess,
-    userData,
-  } = useAppSelector((state) => state.user);
+  const userData = useRecoilValue(userAtom);
   const navigate = useNavigate();
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
@@ -57,26 +53,21 @@ export function SignUp() {
 
   const buttonDisabled = inputArr.some(({ status }) => status !== "success");
 
+  const { mutate, isLoading } = useSignupMutation();
   const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(
-      signUpRequest({
-        email: email.value,
-        nickname: nickname.value,
-        password: password.value,
-      })
-    );
+    mutate({
+      email: email.value,
+      nickname: nickname.value,
+      password: password.value,
+    });
   };
 
   useEffect(() => {
-    if (userData) {
+    if (userData.accessToken) {
       navigate("/");
     }
-    if (isSignUpSuccess === true) {
-      navigate("/login");
-      dispatch(resetSignUpSuccess());
-    }
-  }, [isSignUpSuccess, dispatch, navigate, userData]);
+  }, [navigate, userData]);
 
   return (
     <StyledSignUp>
