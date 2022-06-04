@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
 import { ReactNode, FormEvent } from "react";
+import { useSetRecoilState } from "recoil";
 
-import { modalOff } from "../store/slice/postSlice";
 import { Icon, Button, Typography, Modal, LoadingIndicator } from ".";
 import { flexColumnCenter, flexColumn } from "../styles/common";
-import { useAppDispatch } from "src/store";
+import { addNewPostModalAtom } from "src/store";
 
 interface InputAndButtonInModalInterface {
   title: string;
@@ -23,11 +23,14 @@ export function InputAndButtonInModal({
   loading,
   buttonText,
 }: InputAndButtonInModalInterface) {
-  const dispatch = useAppDispatch();
+  const setShowModal = useSetRecoilState(addNewPostModalAtom);
+  const closeModal = () => {
+    setShowModal(false);
+  };
   return (
     <Modal visible={true}>
       <ModalChildBox onSubmit={onSubmit}>
-        <IconBox onClick={() => dispatch(modalOff())}>
+        <IconBox onClick={closeModal}>
           <Icon name="close" size="md" />
         </IconBox>
         <Typography variant="subtitle">{title}</Typography>

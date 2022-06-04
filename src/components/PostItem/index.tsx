@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { useRecoilValue } from "recoil";
 
 import { Typography } from "..";
 import { flexSpaceBetween } from "../../styles/common";
@@ -6,7 +7,7 @@ import { CommentBox } from "./CommentBox";
 import { CommentInputButton } from "./CommentInputButton";
 import { Description } from "./Description";
 import { PostItem as PostItemInterface } from "src/interface";
-import { useAppSelector } from "src/store";
+import { userAtom } from "src/store";
 
 export function PostItem({
   title,
@@ -16,7 +17,7 @@ export function PostItem({
   comments,
   authorId,
 }: PostItemInterface) {
-  const userData = useAppSelector(({ user }) => user.userData);
+  const { accessToken } = useRecoilValue(userAtom);
 
   return (
     <MapContent key={id} id={id}>
@@ -31,7 +32,7 @@ export function PostItem({
 
       <Description desc={desc} authorId={authorId} id={id} />
 
-      {!!userData && <CommentInputButton id={id} />}
+      {!!accessToken && <CommentInputButton id={id} />}
       <StyledCommentBox>
         {comments.length ? (
           <CommentBox comments={comments} />

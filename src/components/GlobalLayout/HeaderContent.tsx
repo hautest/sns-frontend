@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 
 import { Typography } from "../Typography";
-import { useAppSelector } from "src/store";
+import { userAtom } from "src/store";
 
 export const HeaderContent = () => {
-  const userData = useAppSelector(({ user }) => user.userData);
+  //const userData = useAppSelector(({ user }) => user.userData);
+  const userData = useRecoilValue(userAtom);
 
-  if (!!userData) {
-    const userIconValue = userData.nickname[0];
+  if (!!userData.accessToken) {
+    const userIconValue = userData.user.nickname[0];
     return (
       <>
         <UserIcon>

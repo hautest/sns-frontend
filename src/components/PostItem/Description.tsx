@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, FormEvent } from "react";
+import { useRecoilValue } from "recoil";
 
 import {
   Button,
@@ -12,8 +12,8 @@ import {
 } from "..";
 import { flexColumn } from "../../styles/common";
 import { useInput, useToggle } from "../../hooks";
-import { patchPostRequest } from "../../store/slice/postSlice";
-import { RootState } from "src/store";
+import { usePatchPost } from "./query/usePatchPost";
+import { userAtom } from "src/store";
 
 interface DescriptionProps {
   desc: string;
@@ -22,18 +22,14 @@ interface DescriptionProps {
 }
 
 export function Description({ desc, id, authorId }: DescriptionProps) {
-  const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => state.user.userData);
-  const loading = useSelector(
-    (state: RootState) => state.post.patchPostLoading === id
-  );
-
+  const userData = useRecoilValue(userAtom);
   const [inputValue, onChangeInputValue] = useInput(desc);
   const [modifyDesc, toggleModifyDesc] = useToggle(false);
+  const { mutate, isLoading } = usePatchPost();
 
-  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(patchPostRequest({ inputValue, id }));
+    mutate({ inputValue, id });
     toggleModifyDesc();
   };
 
@@ -44,7 +40,7 @@ export function Description({ desc, id, authorId }: DescriptionProps) {
     setShowAll((prev) => !prev);
   };
 
-  const isMyPost = userData?.id === authorId;
+  const isMyPost = userData.user.id === authorId;
 
   return (
     <DescBox>
@@ -80,9 +76,13 @@ export function Description({ desc, id, authorId }: DescriptionProps) {
             }
             onFalse={
               <div>
-                <Button size="xs" onClick={toggleModifyDesc} disabled={loading}>
+                <Button
+                  size="xs"
+                  onClick={toggleModifyDesc}
+                  disabled={isLoading}
+                >
                   수정
-                  {loading && <LoadingIndicator size="sm" color="white" />}
+                  {isLoading && <LoadingIndicator size="sm" color="white" />}
                 </Button>
               </div>
             }
