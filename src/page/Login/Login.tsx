@@ -9,18 +9,17 @@ import {
   LoadingIndicator,
   FixedCenterPosition,
 } from "../../components";
-import { userState } from "src/store";
-import { useLogin } from "./useLogin";
+import { userAtom } from "src/store";
+import { useLoginMutation } from "./useLoginMutation";
 import { useInput } from "../../hooks";
 
 export function Login() {
-  //const { userData } = useAppSelector(({ user }) => user);
-  const userData = useRecoilValue(userState);
+  const userData = useRecoilValue(userAtom);
 
   const [emailValue, onchangeEmailValue] = useInput("");
   const [passwordValue, onchangePasswordValue] = useInput("");
   const navigate = useNavigate();
-  const { mutate, isLoading } = useLogin();
+  const { mutate, isLoading } = useLoginMutation();
 
   const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

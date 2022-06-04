@@ -6,26 +6,28 @@ import { NicknameEmailBox } from "./NicknameEmailBox";
 import { useNavigate } from "react-router-dom";
 import { MyPosts } from "./MyPosts";
 import { postPageLayout } from "../../styles/common";
-import { userState } from "src/store";
+import { userAtom } from "src/store";
 import { ConditionalRender } from "src/components";
 
 export function MyInformationPage() {
   const navigate = useNavigate();
-  const userData = useRecoilValue(userState);
+  const {
+    accessToken,
+    user: { email, nickname },
+  } = useRecoilValue(userAtom);
+
   useEffect(() => {
-    if (!userData.accessToken) {
+    if (!accessToken) {
       navigate("/");
     }
-  }, [navigate, userData]);
+  }, [navigate, accessToken]);
+
   return (
     <ConditionalRender
-      condition={!!userData.accessToken}
+      condition={!!accessToken}
       onTrue={
         <StyledMyInformationPage>
-          <NicknameEmailBox
-            email={userData?.user.email}
-            nickname={userData?.user.nickname}
-          />
+          <NicknameEmailBox email={email} nickname={nickname} />
           <MyPosts />
         </StyledMyInformationPage>
       }

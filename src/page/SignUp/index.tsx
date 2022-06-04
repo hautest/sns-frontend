@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useEffect, FormEvent } from "react";
-import { useAppSelector } from "src/store";
+import { useRecoilValue } from "recoil";
 
+import { userAtom } from "src/store";
 import {
   Button,
   LabelAndInput,
@@ -20,7 +21,7 @@ const PASSWORD_REGEX =
   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&^])[A-Za-z\d$@$!%*#?&^]{10,}$/;
 
 export function SignUp() {
-  const { userData } = useAppSelector((state) => state.user);
+  const userData = useRecoilValue(userAtom);
   const navigate = useNavigate();
   const email = useValidatedInputValue("", EMAIL_REGEX);
   const nickname = useValidatedInputValue("", NICK_NAME_REGEX);
@@ -63,7 +64,7 @@ export function SignUp() {
   };
 
   useEffect(() => {
-    if (userData) {
+    if (userData.accessToken) {
       navigate("/");
     }
   }, [navigate, userData]);

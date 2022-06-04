@@ -1,7 +1,8 @@
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery, useQuery } from "react-query";
 import { AxiosError } from "axios";
-import { useAppSelector } from "src/store";
+import { useRecoilValue } from "recoil";
 
+import { queryClient, userAtom } from "src/store";
 import { PostItem } from "src/interface";
 import { axiosInstance } from "src/utils";
 
@@ -11,6 +12,8 @@ interface GetPostAPIResponse {
   token: null | string;
 }
 
+const QUERY_KEY = ["myPosts"];
+
 async function getMyPostAPI(lastItemId: string, token: null | string) {
   const { data } = await axiosInstance.get<GetPostAPIResponse>("/posts/my", {
     params: { take: 5, lastItemId },
@@ -18,10 +21,11 @@ async function getMyPostAPI(lastItemId: string, token: null | string) {
   });
   return data;
 }
+
 export const useMyPostsQuery = () => {
-  const token = useAppSelector(({ user }) => user.accessToken);
+  const { accessToken: token } = useRecoilValue(userAtom);
   return useInfiniteQuery(
-    ["myPosts"],
+    QUERY_KEY,
     ({ pageParam }) => getMyPostAPI(pageParam, token),
     {
       getNextPageParam: ({ lastId, posts }) => {
@@ -34,6 +38,22 @@ export const useMyPostsQuery = () => {
         }
         console.log(error);
       },
+      notifyOnChangeProps: [
+        "data",
+        "hasNextPage",
+        "fetchNextPage",
+        "isFetching",
+      ],
     }
   );
+};
+
+export const invalidateMyPostsQuery = (
+  refetchPageFunc: (post: PostItem) => boolean
+) => {
+  queryClient.invalidateQueries<GetPostAPIResponse>(QUERY_KEY, {
+    refetchPage: ({ posts }) => {
+      return posts.some(refetchPageFunc);
+    },
+  });
 };

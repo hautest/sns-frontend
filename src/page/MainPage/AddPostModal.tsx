@@ -1,12 +1,12 @@
 import { Input, InputAndButtonInModal } from "../../components";
 import { FormEvent } from "react";
 import { useInput } from "../../hooks";
-import { useCreatePost } from "./query/useCreatePost";
+import { useCreatePostMutation } from "./query/useCreatePostMutation";
 
 export function AddPostModal() {
   const [desc, onChangeDesc] = useInput("");
   const [title, onChangeTitle] = useInput("");
-  const { mutate, isLoading } = useCreatePost();
+  const { mutate, isLoading } = useCreatePostMutation();
 
   const handleOnsubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

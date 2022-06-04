@@ -5,11 +5,11 @@ import { Button, FixedCenterPosition } from "../../components";
 import { postPageLayout } from "../../styles/common";
 import { ContentBox } from "./ContentBox";
 import { AddPostModal } from "./AddPostModal";
-import { addNewPostModalAtom, userState } from "src/store";
+import { addNewPostModalAtom, userAtom } from "src/store";
 
 export function MainPage() {
   const [showModal, setShowModal] = useRecoilState(addNewPostModalAtom);
-  const userData = useRecoilValue(userState);
+  const userData = useRecoilValue(userAtom);
   const handleOnclickBtn = () => {
     setShowModal(true);
   };

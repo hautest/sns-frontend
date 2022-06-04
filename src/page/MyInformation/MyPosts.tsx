@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { PostItem, LoadingIndicator } from "../../components";
 import { useInfiniteScroll } from "../../hooks";
 import { postItemLayout } from "../../styles/common";
-import { useMyPostsQuery } from "./useMyPostsQuery";
+import { useMyPostsQuery } from "./query/useMyPostsQuery";
 
 export function MyPosts() {
   const { data, hasNextPage, fetchNextPage, isFetching } = useMyPostsQuery();

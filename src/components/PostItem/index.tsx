@@ -7,7 +7,7 @@ import { CommentBox } from "./CommentBox";
 import { CommentInputButton } from "./CommentInputButton";
 import { Description } from "./Description";
 import { PostItem as PostItemInterface } from "src/interface";
-import { userState } from "src/store";
+import { userAtom } from "src/store";
 
 export function PostItem({
   title,
@@ -17,7 +17,7 @@ export function PostItem({
   comments,
   authorId,
 }: PostItemInterface) {
-  const userData = useRecoilValue(userState);
+  const { accessToken } = useRecoilValue(userAtom);
 
   return (
     <MapContent key={id} id={id}>
@@ -32,7 +32,7 @@ export function PostItem({
 
       <Description desc={desc} authorId={authorId} id={id} />
 
-      {!!userData.accessToken && <CommentInputButton id={id} />}
+      {!!accessToken && <CommentInputButton id={id} />}
       <StyledCommentBox>
         {comments.length ? (
           <CommentBox comments={comments} />

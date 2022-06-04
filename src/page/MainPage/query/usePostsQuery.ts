@@ -1,8 +1,9 @@
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery, InfiniteData } from "react-query";
 import { AxiosError } from "axios";
 
 import { axiosInstance } from "src/utils";
 import { PostItem } from "src/interface";
+import { queryClient } from "src/store";
 
 interface GetPostAPIResponse {
   posts: PostItem[];
@@ -15,8 +16,11 @@ async function getPostAPI(lastItemId: string) {
   });
   return data;
 }
+
+const QUERY_KEY = ["posts"];
+
 export const usePostsQuery = () => {
-  return useInfiniteQuery(["posts"], ({ pageParam }) => getPostAPI(pageParam), {
+  return useInfiniteQuery(QUERY_KEY, ({ pageParam }) => getPostAPI(pageParam), {
     getNextPageParam: ({ lastId, posts }) => {
       const lastItemId = posts[posts.length - 1].id;
       return lastId !== lastItemId ? lastItemId : null;
@@ -27,5 +31,19 @@ export const usePostsQuery = () => {
       }
       console.log(error);
     },
+    notifyOnChangeProps: ["data", "hasNextPage", "fetchNextPage", "isFetching"],
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const invalidatePostsQuery = (
+  refetchPage: (
+    lastPage: GetPostAPIResponse,
+    index: number,
+    allPages: GetPostAPIResponse[]
+  ) => boolean
+) => {
+  queryClient.invalidateQueries<GetPostAPIResponse>(QUERY_KEY, {
+    refetchPage,
   });
 };

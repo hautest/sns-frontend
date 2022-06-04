@@ -11,6 +11,7 @@ export function ContentBox() {
   const { ref } = useInfiniteScroll(() => {
     if (hasNextPage) fetchNextPage();
   }, [hasNextPage]);
+
   return (
     <StyledContentBox>
       {data?.pages.map((page) =>

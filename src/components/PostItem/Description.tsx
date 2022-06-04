@@ -13,7 +13,7 @@ import {
 import { flexColumn } from "../../styles/common";
 import { useInput, useToggle } from "../../hooks";
 import { usePatchPost } from "./query/usePatchPost";
-import { userState } from "src/store";
+import { userAtom } from "src/store";
 
 interface DescriptionProps {
   desc: string;
@@ -22,7 +22,7 @@ interface DescriptionProps {
 }
 
 export function Description({ desc, id, authorId }: DescriptionProps) {
-  const userData = useRecoilValue(userState);
+  const userData = useRecoilValue(userAtom);
   const [inputValue, onChangeInputValue] = useInput(desc);
   const [modifyDesc, toggleModifyDesc] = useToggle(false);
   const { mutate, isLoading } = usePatchPost();

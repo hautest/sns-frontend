@@ -1,8 +1,10 @@
 import { axiosInstance } from "src/utils";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { useRecoilValue } from "recoil";
 
-import { userState } from "src/store";
+import { userAtom } from "src/store";
+import { invalidateMyPostsQuery } from "src/page/MyInformation/query/useMyPostsQuery";
+import { invalidatePostsQuery } from "src/page/MainPage/query/usePostsQuery";
 
 function patchPostAPI(inputValue: string, id: string, token: null | string) {
   return axiosInstance.patch(
@@ -18,15 +20,17 @@ interface useMutationProps {
 }
 
 export const usePatchPost = () => {
-  const queryClient = useQueryClient();
-  const { accessToken: token } = useRecoilValue(userState);
+  const { accessToken: token } = useRecoilValue(userAtom);
+
   return useMutation(
     ({ inputValue, id }: useMutationProps) =>
       patchPostAPI(inputValue, id, token),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries("posts");
-        queryClient.invalidateQueries("myPosts");
+      onSuccess: (_, { id }) => {
+        invalidatePostsQuery(({ posts }) =>
+          posts.some((post) => post.id === id)
+        );
+        invalidateMyPostsQuery((post) => post.id === id);
       },
       onError: (error) => {
         console.dir(error);

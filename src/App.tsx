@@ -11,7 +11,7 @@ import { MyInformationPage } from "./page/MyInformation";
 import { GlobalLayout } from "./components";
 import { Login } from "./page/Login/Login";
 import { axiosInstance } from "./utils";
-import { userState } from "./store";
+import { userAtom } from "./store";
 
 function App() {
   const { mutate } = useMutation(
@@ -25,7 +25,7 @@ function App() {
       },
     }
   );
-  const setUserData = useSetRecoilState(userState);
+  const setUserData = useSetRecoilState(userAtom);
 
   useEffect(() => {
     const refreshToken = localStorage.getItem("refreshToken");
